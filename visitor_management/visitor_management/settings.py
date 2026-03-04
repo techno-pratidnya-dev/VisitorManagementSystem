@@ -18,7 +18,7 @@ SECRET_KEY = 'django-insecure-change-this-in-production'
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["visitormanagementsystem-5eda.onrender.com", "localhost", "127.0.0.1"]
 
 
 # --------------------------------------------------
