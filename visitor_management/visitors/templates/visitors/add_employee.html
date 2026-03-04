@@ -1,0 +1,106 @@
+{% extends 'visitors/base.html' %}
+{% load static %}
+
+{% block title %}Add Employee{% endblock %}
+
+{% block content %}
+
+<h4 class="mb-1">Employee Entry</h4>
+<p class="text-muted mb-4">Office staff registration with digital signature</p>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="row g-3">
+
+                <!-- Work As -->
+                <div class="col-md-6">
+                    <label class="form-label">Work As</label>
+                    <input type="text"
+                           name="work_as"
+                           class="form-control"
+                           placeholder="e.g. Clerk, Security, Manager"
+                           required>
+                </div>
+
+                <!-- Name -->
+                <div class="col-md-6">
+                    <label class="form-label">Employee Name</label>
+                    <input type="text"
+                           name="name"
+                           class="form-control"
+                           placeholder="Enter full name"
+                           required>
+                </div>
+
+                <!-- Mobile -->
+                <div class="col-md-6">
+                    <label class="form-label">Mobile Number</label>
+                    <input type="text"
+                           name="mobile"
+                           class="form-control"
+                           placeholder="10 digit mobile number"
+                           maxlength="10"
+                           required>
+                </div>
+
+                <!-- Status -->
+                <div class="col-md-6">
+                    <label class="form-label">Status</label>
+                    <select name="status" class="form-select">
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                    </select>
+                </div>
+
+                <!-- DIGITAL SIGNATURE -->
+                <div class="col-12">
+                    <label class="form-label">
+                        Digital Signature <span class="text-danger">*</span>
+                    </label>
+
+                    <canvas id="signaturePad"
+                            height="150">
+                    </canvas>
+
+                    <input type="hidden"
+                           name="signature_data"
+                           id="signatureData">
+
+                    <small class="text-muted d-block mt-2">
+                        Please ask the employee to sign before submitting.
+                    </small>
+
+                    <div class="mt-2">
+                        <button type="button"
+                                id="clearSign"
+                                class="btn btn-sm btn-outline-secondary">
+                            Clear Signature
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- SUBMIT -->
+            <div class="mt-4 text-end">
+                <button type="submit" class="btn btn-dark px-4">
+                    Save Employee
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+<!-- CSS -->
+<link rel="stylesheet" href="{% static 'visitors/css/employee.css' %}">
+
+<!-- SIGNATURE PAD JS -->
+<script src="{% static 'visitors/js/signature.js' %}"></script>
+
+{% endblock %}

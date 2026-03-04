@@ -1,0 +1,121 @@
+{% extends 'visitors/base.html' %}
+{% load static %}
+
+{% block title %}Employee Management{% endblock %}
+
+{% block content %}
+
+<h4 class="mb-1">Employee / Staff Management</h4>
+<p class="text-muted mb-4">Office staff attendance & digital signature</p>
+
+<div class="d-flex justify-content-end mb-3">
+    <a href="{% url 'add_employee' %}" class="btn btn-dark">
+        + Add Employee
+    </a>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body table-responsive">
+
+        <table class="table table-bordered table-hover align-middle text-center">
+            <thead class="table-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Work As</th>
+                    <th>Name</th>
+                    <th>Mobile</th>
+                    <th>In Time</th>
+                    <th>Out Time</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                    <th>Signature</th>
+                </tr>
+            </thead>
+
+            <tbody>
+            {% for row in employee_data %}
+            {% with emp=row.emp %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ emp.work_as }}</td>
+                    <td>{{ emp.name }}</td>
+                    <td>{{ emp.mobile }}</td>
+
+                    <!-- IN TIME -->
+                    <td>
+                        {% if row.in_time %}
+                            <span class="badge badge-in">
+                                {{ row.in_time|time:"H:i" }}
+                            </span>
+                        {% else %}
+                            <span class="text-muted">-</span>
+                        {% endif %}
+                    </td>
+
+                    <!-- OUT TIME -->
+                    <td>
+                        {% if row.out_time %}
+                            <span class="badge badge-out">
+                                {{ row.out_time|time:"H:i" }}
+                            </span>
+                        {% else %}
+                            <span class="text-muted">-</span>
+                        {% endif %}
+                    </td>
+
+                    <!-- STATUS (IN / OUT) -->
+                    <td>
+                        {% if row.in_time and not row.out_time %}
+                            <span class="badge badge-in">IN</span>
+                        {% elif row.out_time %}
+                            <span class="badge badge-out">OUT</span>
+                        {% else %}
+                            <span class="badge bg-secondary">—</span>
+                        {% endif %}
+                    </td>
+
+                    <!-- ACTION -->
+                    <td>
+                        {% if not row.in_time %}
+                            <a href="{% url 'employee_checkin' emp.id %}"
+                               class="btn btn-sm btn-success">
+                                Check-In
+                            </a>
+                        {% elif row.in_time and not row.out_time %}
+                            <a href="{% url 'employee_checkout' emp.id %}"
+                               class="btn btn-sm btn-danger">
+                                Check-Out
+                            </a>
+                        {% else %}
+                            <span class="text-muted">Done</span>
+                        {% endif %}
+                    </td>
+
+                    <!-- SIGNATURE -->
+                    <td>
+                        {% if emp.signature %}
+                            <img src="{{ emp.signature.url }}"
+                                 class="signature-img"
+                                 alt="Signature">
+                        {% else %}
+                            <span class="text-muted">-</span>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endwith %}
+            {% empty %}
+                <tr>
+                    <td colspan="9" class="text-muted">
+                        No employee records found
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+<link rel="stylesheet" href="{% static 'visitors/css/employee.css' %}">
+
+{% endblock %}

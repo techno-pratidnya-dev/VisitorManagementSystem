@@ -1,0 +1,193 @@
+{% extends "visitors/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<section class="visitor-entry-section">
+
+<div class="entry-card mx-auto">
+
+<div class="card-body">
+
+<div class="entry-header">
+    Visitor Entry Form
+</div>
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    {% endfor %}
+{% endif %}
+
+<form method="POST" enctype="multipart/form-data">
+{% csrf_token %}
+
+<div class="row g-3">
+
+<div class="col-md-6">
+<label>Name *</label>
+<input type="text" name="name" class="form-control" required>
+</div>
+
+<div class="col-md-6">
+<label>Mobile *</label>
+<input type="text" name="mobile" maxlength="10"
+       pattern="[0-9]{10}" class="form-control" required>
+</div>
+
+<div class="col-md-6">
+<label>Email *</label>
+<input type="email" name="email" class="form-control" required>
+</div>
+
+<div class="col-md-6">
+<label>Gender *</label>
+<select name="gender" class="form-select" required>
+<option value="">Select</option>
+<option value="Male">Male</option>
+<option value="Female">Female</option>
+<option value="Other">Other</option>
+</select>
+</div>
+
+<div class="col-12">
+<label>Address *</label>
+<textarea name="address" class="form-control" required></textarea>
+</div>
+
+<div class="col-md-6">
+<label>Aadhaar *</label>
+<input type="text" name="aadhaar" maxlength="12"
+       pattern="[0-9]{12}" class="form-control" required>
+</div>
+
+<div class="col-md-6">
+<label>Purpose *</label>
+<input type="text" name="purpose" class="form-control" required>
+</div>
+
+<div class="col-md-6">
+<label>Visit To *</label>
+<input type="text" name="visit_to" class="form-control" required>
+</div>
+
+<div class="col-md-6">
+<label>Hostel / Office *</label>
+<select name="hostel_or_office" class="form-select" required>
+<option value="">Select</option>
+<option>Dr. Achyutrav Shankar Apte Hostel</option>
+<option>P.D. Karkhanis Hostel</option>
+<option>Lala Lajpatrai Vidyarthi Bhavan</option>
+<option>Sumitra Sadan Hostel</option>
+<option>Medhavi Hostel</option>
+<option>New Girls Hostel – A Wing</option>
+<option>Latika Gaytonde Hostel</option>
+<option>Ahilyanagar Girls Hostel</option>
+<option>Ahilyanagar Boys Hostel</option>
+<option>Haribhau Pathak Hostel</option>
+<option>Main Office – New Hostel</option>
+<option>Apte Office – FC</option>
+</select>
+</div>
+
+</div>
+
+<hr class="my-4">
+
+<h5 class="fw-bold text-primary mt-4">Visitor Photograph</h5>
+<div class="mb-2">
+<button type="button" id="openCamera" class="btn btn-success btn-sm">
+    Open Camera
+</button>
+<button type="button" id="uploadGallery" class="btn btn-primary btn-sm">
+    Upload from Gallery
+</button>
+</div>
+
+<input type="file" id="photoInput" name="photo"
+       accept="image/*" class="d-none" required>
+
+<video id="video" class="w-100 d-none mt-2" autoplay></video>
+<button type="button" id="captureBtn"
+        class="btn btn-sm btn-primary mt-2 d-none">
+        Capture
+</button>
+
+<img id="photoPreview"
+     class="img-thumbnail mt-2 d-none"
+     width="200">
+
+<hr class="my-4">
+
+<h5 class="fw-bold text-primary mt-4">Visitor Signature</h5>
+<label class="form-label fw-bold">
+    Signature <span class="text-danger">*</span>
+</label>
+
+<div class="d-flex gap-2 mb-2">
+    <button type="button" id="digitalBtn"
+            class="btn btn-outline-dark btn-sm">
+        Digital Signature
+    </button>
+
+    <button type="button" id="uploadBtn"
+            class="btn btn-outline-primary btn-sm">
+        Upload Signature
+    </button>
+</div>
+
+<div id="digitalSection">
+    <canvas id="signaturePad"
+            class="border rounded w-100 bg-white"
+            height="150"></canvas>
+
+    <button type="button"
+            id="clearSign"
+            class="btn btn-sm btn-secondary mt-2">
+        Clear
+    </button>
+
+    <input type="hidden"
+           name="signature_data"
+           id="signatureData">
+</div>
+
+<div id="uploadSection" class="d-none mt-3">
+    <input type="file"
+           id="signatureUploadInput"
+           name="signature"
+           accept="image/*"
+           class="form-control">
+</div>
+
+<div class="mt-4">
+    <label class="form-label fw-bold">
+        Remark <span class="text-muted">(Optional)</span>
+    </label>
+
+    <textarea name="remark"
+              class="form-control"
+              rows="3"
+              placeholder="Enter any additional note..."></textarea>
+</div>
+
+<div class="text-end mt-3">
+<button type="submit" class="btn btn-primary">
+    Submit Visitor
+</button>
+</div>
+
+</form>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<script src="{% static 'visitors/js/visitor_entry.js' %}"></script>
+
+{% endblock %}

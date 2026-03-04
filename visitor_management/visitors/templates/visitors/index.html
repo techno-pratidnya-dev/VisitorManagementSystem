@@ -1,0 +1,43 @@
+{% extends "visitors/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<!-- ================= HERO SECTION ================= -->
+<section class="hero-section py-5">
+    <div class="container">
+<div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="hero-title fade-up">
+                    Make your workplace <br> Safe & Secure
+                </h1>
+
+                <p class="hero-text mt-4 fade-up">
+                    The safety of your employees and the environment in which they operate is paramount.
+                    Employees and guests can check in safely with our Visitor Management System.
+                </p>
+
+                {% if user.is_authenticated %}
+                    <a href="{% url 'dashboard' %}" class="btn btn-primary mt-4 px-4 fade-up">
+                        Go to Dashboard
+                    </a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="btn btn-primary mt-4 px-4 fade-up">
+                        Login to Continue
+                    </a>
+                {% endif %}
+            </div>
+
+            <div class="col-lg-6 text-center">
+                <img src="https://images.unsplash.com/photo-1556740738-b6a63e27c4df"
+                     class="img-fluid hero-image rounded"
+                     alt="Reception">
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<button class="scroll-top">↑</button>
+
+{% endblock %}

@@ -1,0 +1,33 @@
+body {
+    background-color: #f4f6f9;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.card {
+    border-radius: 10px;
+}
+
+.card-header {
+    background-color: #ffffff;
+    font-size: 20px;
+}
+
+.form-control {
+    height: 45px;
+    border-radius: 8px;
+}
+
+.btn-dark {
+    height: 45px;
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+.card-footer a {
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.card-footer a:hover {
+    text-decoration: underline;
+}

@@ -1,0 +1,229 @@
+/* IMAGE + MAIN TEXT */
+.about-img {
+    border-radius: 6px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+
+.about-text h2 {
+    font-weight: 600;
+    color: #0d6efd;
+    margin-bottom: 12px;
+}
+
+.about-text p {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #444;
+}
+
+/* INFO SECTION */
+.about-info .info-title {
+    font-weight: 600;
+    color: #0d6efd;
+    margin-bottom: 8px;
+    border-left: 4px solid #f97316;
+    padding-left: 8px;
+}
+
+.about-info p,
+.about-info .info-small {
+    font-size: 15px;
+    color: #555;
+    line-height: 1.7;
+}
+
+/* CERTIFICATE */
+.certificate-section {
+    background: #fafafa;
+    padding: 30px 0;
+    border-top: 2px solid #f97316;
+}
+
+.certificate-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #0d6efd;
+    margin-bottom: 18px;
+}
+
+.cert-img {
+    max-width: 80%;
+    border-radius: 6px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+}
+/* COUNTERS */
+.stats-section {
+  background: #0d6efd;
+  color: white;
+}
+.counter {
+  font-size: 40px;
+  font-weight: bold;
+}
+
+/* TRUSTEE CARDS */
+.trust-card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+  transition: 0.3s;
+}
+.trust-card:hover {
+  transform: translateY(-8px);
+}
+.trust-img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  margin-bottom: 15px;
+}
+
+/* FADE IN */
+.fade-section {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: 0.6s ease;
+}
+.fade-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+/* HERO SECTION */
+.elite-hero {
+    position: relative;
+    height: 500px;
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Light overlay instead of dark */
+.hero-overlay {
+    background: rgba(255, 255, 255, 0.75); /* Light overlay */
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Dark text styling */
+.elite-hero h1 {
+    color: #1e293b;   /* Dark navy */
+    font-weight: 700;
+}
+
+.elite-hero p {
+    color: #334155;   /* Soft dark gray */
+    font-size: 18px;
+}
+.structure-circle {
+    width: 160px;
+    height: 160px;
+    background: #0d6efd;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    font-weight: 600;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+}
+
+.structure-line {
+    width: 4px;
+    height: 40px;
+    background: #f97316;
+    margin: 10px auto;
+}
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #f8f9fb;
+    color: #2c2c2c;
+}
+/* GLOBAL SECTION SPACING */
+section {
+    padding-top: 60px;
+    padding-bottom: 60px;
+}
+
+/* Elegant Section Divider */
+.section-title {
+    font-weight: 600;
+    color: #0d6efd;
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.section-title::after {
+    content: "";
+    width: 60px;
+    height: 3px;
+    background: #f97316;
+    display: block;
+    margin-top: 8px;
+    border-radius: 3px;
+}
+
+/* Softer shadows */
+.about-img,
+.trust-card,
+.cert-img {
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+/* Smooth hover animation */
+.trust-card {
+    transition: all 0.3s ease;
+}
+
+.trust-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+}
+
+/* Buttons refinement */
+.btn-primary {
+    background: #0d6efd;
+    border: none;
+    border-radius: 30px;
+    padding: 10px 25px;
+    transition: 0.3s;
+}
+
+.btn-primary:hover {
+    background: #084298;
+    transform: translateY(-2px);
+}
+.about-full-img {
+    max-width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    margin-top: 20px;
+}
+/* HOVER GLOW EFFECT */
+.zoomable {
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.zoomable:hover {
+    transform: scale(1.02);
+    box-shadow: 0 12px 35px rgba(13,110,253,0.4);
+}
+
+/* FADE ANIMATION */
+.fade-section {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: 0.7s ease;
+}
+
+.fade-section.visible {
+    opacity: 1;
+    transform: translateY(0);
+}

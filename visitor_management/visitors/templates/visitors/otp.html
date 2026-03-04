@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="{% static 'visitors/css/otp.css' %}">
+</head>
+<body>
+
+<div class="otp-card {% if error %}shake{% endif %}">
+
+{% if success %}
+    <div class="success-animation">✔ Verified Successfully</div>
+    <script>
+        setTimeout(function(){
+            window.location.href = "/dashboard/";
+        }, 2000);
+    </script>
+{% else %}
+
+<h3>Email Verification</h3>
+<p>OTP sent to {{ masked_email }}</p>
+
+<form method="POST" id="otpForm">
+    {% csrf_token %}
+
+    <div class="otp-inputs">
+        <input type="text" maxlength="1" class="otp-box">
+        <input type="text" maxlength="1" class="otp-box">
+        <input type="text" maxlength="1" class="otp-box">
+        <input type="text" maxlength="1" class="otp-box">
+        <input type="text" maxlength="1" class="otp-box">
+        <input type="text" maxlength="1" class="otp-box">
+    </div>
+
+    <input type="hidden" name="otp" id="finalOtp">
+
+    <button type="submit">Verify OTP</button>
+</form>
+
+<p class="resend">
+    <a href="{% url 'resend_otp' %}" id="resendLink">Resend OTP</a>
+</p>
+
+<p>Resend available in <span id="resendTimer">30</span> sec</p>
+
+{% endif %}
+
+</div>
+
+<script src="{% static 'visitors/js/otp.js' %}"></script>
+</body>
+</html>

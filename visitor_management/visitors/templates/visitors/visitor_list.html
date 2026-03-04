@@ -1,0 +1,270 @@
+{% extends "visitors/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+
+    <!-- ================= TOP STATS ================= -->
+    <div class="row mb-4 g-3">
+
+        <div class="col-md-4">
+            <div class="stat-card bg-white shadow-sm p-4 text-center">
+                <h6 class="text-muted">Total Visitors</h6>
+                <h3 class="fw-bold text-primary">{{ total }}</h3>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="stat-card bg-white shadow-sm p-4 text-center">
+                <h6 class="text-muted">IN</h6>
+                <h3 class="fw-bold text-success">{{ in_count }}</h3>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="stat-card bg-white shadow-sm p-4 text-center">
+                <h6 class="text-muted">OUT</h6>
+                <h3 class="fw-bold text-danger">{{ out_count }}</h3>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ================= MAIN CARD ================= -->
+    <div class="card shadow-sm border-0">
+
+        <!-- HEADER -->
+        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Visitor List</h5>
+
+            <div class="d-flex gap-2">
+                <a href="{% url 'add_visitor' %}" class="btn btn-sm btn-light">
+                    + Add Visitor
+                </a>
+
+                <a href="?{{ request.GET.urlencode }}&export=csv"
+                   class="btn btn-sm btn-success {% if page_obj.paginator.count == 0 %}disabled{% endif %}">
+                    Download CSV
+                </a>
+            </div>
+        </div>
+
+        <!-- ================= FILTER ================= -->
+        <div class="card-body border-bottom">
+            <form method="GET" class="row g-3 align-items-end">
+
+                <div class="col-md-2">
+                    <label class="form-label">From Date</label>
+                    <input type="text"
+                           name="from_date"
+                           class="form-control datepicker"
+                           value="{{ request.GET.from_date }}"
+                           placeholder="Select date">
+                </div>
+
+                <div class="col-md-2">
+                    <label class="form-label">To Date</label>
+                    <input type="text"
+                           name="to_date"
+                           class="form-control datepicker"
+                           value="{{ request.GET.to_date }}"
+                           placeholder="Select date">
+                </div>
+
+                <div class="col-md-2">
+                    <label class="form-label">Status</label>
+                    <select name="status" class="form-select">
+                        <option value="">All</option>
+                        <option value="IN" {% if request.GET.status == "IN" %}selected{% endif %}>IN</option>
+                        <option value="OUT" {% if request.GET.status == "OUT" %}selected{% endif %}>OUT</option>
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Search</label>
+                    <input type="text"
+                           name="search"
+                           class="form-control"
+                           placeholder="Name / Mobile / Purpose"
+                           value="{{ request.GET.search }}">
+                </div>
+
+                <div class="col-md-3 d-flex gap-2">
+                    <button type="submit" class="btn btn-dark w-100">
+                        Filter
+                    </button>
+
+                    <a href="{% url 'visitor_list' %}"
+                       class="btn btn-secondary w-100">
+                        Clear
+                    </a>
+                </div>
+
+            </form>
+        </div>
+
+        <!-- ================= RESULT COUNT ================= -->
+        {% if page_obj.paginator.count > 0 %}
+        <div class="px-3 py-2 bg-light border-top">
+            <small class="text-muted">
+                Showing {{ page_obj.start_index }} – {{ page_obj.end_index }}
+                of {{ page_obj.paginator.count }} visitors
+            </small>
+        </div>
+        {% endif %}
+
+        <!-- ================= TABLE ================= -->
+        <div class="card-body p-0">
+            <div class="table-responsive">
+
+                <table class="table table-striped table-hover text-center align-middle mb-0">
+
+                    <thead class="table-secondary">
+                        <tr>
+                            <th>Name</th>
+                            <th>Mobile</th>
+                            <th>Email</th>
+                            <th>Purpose</th>
+                            <th>Visit To</th>
+                            <th>Hostel / Office</th>
+                            <th>Aadhaar</th>
+                            <th>Entry Time</th>
+                            <th>Exit Time</th>
+                            <th>Status</th>
+                            <th>Signature</th>
+                            <th>Photo</th>
+                            <th>Remark</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for v in visitors %}
+                        <tr>
+                            <td>{{ v.name }}</td>
+                            <td>{{ v.mobile }}</td>
+                            <td>{{ v.email }}</td>
+                            <td>{{ v.purpose }}</td>
+                            <td>{{ v.visit_to }}</td>
+                            <td>{{ v.hostel_or_office }}</td>
+                            <td>{{ v.masked_aadhaar }}</td>
+                            <td>{{ v.entry_time|date:"d M Y, h:i A" }}</td>
+
+                            <td>
+                                {% if v.exit_time %}
+                                    {{ v.exit_time|date:"d M Y, h:i A" }}
+                                {% else %}
+                                    <span class="text-muted">—</span>
+                                {% endif %}
+                            </td>
+
+                            <td>
+                                {% if v.status == 'IN' %}
+                                    <span class="badge bg-success">IN</span>
+                                {% else %}
+                                    <span class="badge bg-danger">OUT</span>
+                                {% endif %}
+                            </td>
+
+                            <td>
+                                {% if v.signature %}
+                                    <img src="{{ v.signature.url }}" width="70" class="img-thumbnail">
+                                {% else %} — {% endif %}
+                            </td>
+
+                            <td>
+                                {% if v.photo %}
+                                    <img src="{{ v.photo.url }}" width="70" class="img-thumbnail">
+                                {% else %} — {% endif %}
+                            </td>
+
+                            <td style="max-width:150px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;"
+                                title="{{ v.remark }}">
+                                {{ v.remark|default:"—" }}
+                            </td>
+
+                            <td class="d-flex gap-1 flex-wrap">
+
+    {% if v.status == 'IN' %}
+        <a href="{% url 'checkout_visitor' v.id %}"
+           class="btn btn-sm btn-warning">
+            Check Out
+        </a>
+    {% endif %}
+
+    <!-- Edit -->
+    <a href="{% url 'edit_visitor' v.id %}"
+       class="btn btn-sm btn-outline-primary">
+        Edit
+    </a>
+
+    <!-- Delete -->
+    <a href="{% url 'delete_visitor' v.id %}"
+   class="btn btn-sm btn-outline-danger"
+   onclick="return confirm('Are you sure you want to delete this visitor?');">
+    Delete
+</a>
+
+</td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="14" class="text-muted py-4">
+                                No visitors found.
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+
+                </table>
+            </div>
+
+            <!-- ================= PAGINATION ================= -->
+            {% if page_obj.has_other_pages %}
+            <nav class="p-3">
+                <ul class="pagination justify-content-center">
+
+                    {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link"
+                               href="?page={{ page_obj.previous_page_number }}&{{ request.GET.urlencode }}">
+                                Previous
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    {% for num in page_obj.paginator.page_range %}
+                        {% if page_obj.number == num %}
+                            <li class="page-item active">
+                                <span class="page-link">{{ num }}</span>
+                            </li>
+                        {% else %}
+                            <li class="page-item">
+                                <a class="page-link"
+                                   href="?page={{ num }}&{{ request.GET.urlencode }}">
+                                    {{ num }}
+                                </a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link"
+                               href="?page={{ page_obj.next_page_number }}&{{ request.GET.urlencode }}">
+                                Next
+                            </a>
+                        </li>
+                    {% endif %}
+
+                </ul>
+            </nav>
+            {% endif %}
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

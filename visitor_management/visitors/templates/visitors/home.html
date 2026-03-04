@@ -1,0 +1,161 @@
+{% extends "visitors/base.html" %}
+{% load static %}
+
+{% block content %}
+
+{% load static %}
+<link rel="stylesheet" href="{% static 'visitors/css/home.css' %}">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+<!-- ================= HERO SECTION ================= -->
+<section class="hero-section">
+
+    <div id="vssCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="4000">
+
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="{% static 'visitors/images/Aapte-hostel-slider.jpg' %}" class="d-block w-100 hero-img">
+            </div>
+
+            <div class="carousel-item">
+                <img src="{% static 'visitors/images/Lajpat-Bhavan-slider.jpg' %}" class="d-block w-100 hero-img">
+            </div>
+
+            <div class="carousel-item">
+                <img src="{% static 'visitors/images/PD-Karkhanis-slider.jpg' %}" class="d-block w-100 hero-img">
+            </div>
+
+            <div class="carousel-item">
+                <img src="{% static 'visitors/images/Sumitra-photo-new-name-board-slider.jpg' %}" class="d-block w-100 hero-img">
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'visitors/images/nagar-hostel.jpg' %}" class="d-block w-100 hero-img">
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'visitors/images/girl-hostel.jpg' %}" class="d-block w-100 hero-img">
+            </div>
+            <div class="carousel-item active">
+                <img src="{% static 'visitors/images/samiti_building.jpg' %}" class="d-block w-100 hero-img">
+            </div>
+
+        </div>
+
+        <button class="carousel-control-prev" type="button" data-bs-target="#vssCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </button>
+
+        <button class="carousel-control-next" type="button" data-bs-target="#vssCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </button>
+
+    </div>
+</section>
+
+<!-- ================= INFO CARDS ================= -->
+<section class="info-section-vss py-5">
+    <div class="container">
+        <div class="row g-4 justify-content-center">
+
+            <!-- Green Card -->
+            <div class="col-lg-4">
+                <div class="vss-card green-card">
+                    <div class="vss-icon">
+                        <i class="bi bi-hand-thumbs-up"></i>
+                    </div>
+                    <h4>VIDYARTHI SAHAYYAK SAMITI</h4>
+                    <p>
+                        Vidyarthi Sahayyak Samiti (SAMITI) is a non-Government charitable organization set up in 1955 at Pune (Maharashtra state / India) by Dr. Achyutrao Apte and his colleagues and provides lodging, boarding facilities at a nominal cost to students (boys and girls) from economically weaker section of society coming to Pune to pursue higher education.
+SAMITI also conducts various educational and other programmes aimed at personality development and character building for the benefit of the students.
+Vidyarthi Sahayyak Samiti (Popularly knows as ‘Samiti’) is a public charitable trust located in Pune, Maharashtra state, India. Registration No : E 219 under section 50 A (3) of the Public Trusts Act 1950.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Blue Card -->
+            <div class="col-lg-4">
+                <div class="vss-card blue-card">
+                    <div class="vss-icon">
+                        <i class="bi bi-journal-text"></i>
+                    </div>
+                    <h4>ACTIVITIES</h4>
+                    <p>
+                        Samiti’s activities are not limited to providing lodging and boarding facilities to students at concessional rates. Its main objective is to help in developing their personality. Several activities and programmes are organised to achieve this. Samiti’s goal is to transform these youths from rural areas into well cultured and confident persons through various activites such as Group discussions, English classes, English presentation, yoga, sports (compulsory) , cultural programmes (competitions in various activities such as cooking, debating, elocution, story telling, etc.), lectures of experts from various fields, educational tours, entrepreneurship development programme, management of the hostels by students themselves, etc.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Orange Card -->
+            <div class="col-lg-4">
+                <div class="vss-card orange-card">
+                    <div class="vss-icon">
+                        <i class="bi bi-building"></i>
+                    </div>
+                    <h4>FACILITIES</h4>
+                    <p>
+                        Samiti is not merely a lodging and boarding . Apart from offering accommodation and meals at concessional rates it attaches more importance to development of personality. Cleanliness, equality and dignity of labour are the three pillars on which Samiti operates.
+Each room is well ventilated with windows and fans and accommodates 3 to 4 students. Each student is provided with a bed and mattress, a table and chair and a cupboard. There are clean toilets and bathrooms with hot water supply.
+Other facilities include computer centre, a well-stocked library and a spacious reading hall, a health centre, sports equipment, etc.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ================= FACILITIES SECTION ================= -->
+<section class="facilities-section py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5">OUR FACILITIES</h2>
+
+        <div class="row g-4">
+
+            <div class="col-md-4">
+                <div class="facility-card">
+                    <img src="{% static 'visitors/images/gallery-room.jpg' %}">
+                    <div class="facility-overlay">ROOM</div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="facility-card">
+                    <img src="{% static 'visitors/images/Gallery-LIBRARY.jpg' %}">
+                    <div class="facility-overlay">LIBRARY</div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="facility-card">
+                    <img src="{% static 'visitors/images/gallery-MESS.jpg' %}">
+                    <div class="facility-overlay">MESS</div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="facility-card">
+                    <img src="{% static 'visitors/images/gallery-computer.jpg' %}">
+                    <div class="facility-overlay">COMPUTER CENTER</div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="facility-card">
+                    <img src="{% static 'visitors/images/Gallery-PERSONALITY-DEVELOPMENT.jpg' %}">
+                    <div class="facility-overlay">PERSONALITY DEVELOPMENT</div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="facility-card">
+                    <img src="{% static 'visitors/images/gallery-earnandlarn.jpg' %}">
+                    <div class="facility-overlay">EARN & LEARN</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<script src="{% static 'visitors/js/home.js' %}"></script>
+<!-- Scroll To Top -->
+<button class="scroll-top">↑</button>
+{% endblock %}

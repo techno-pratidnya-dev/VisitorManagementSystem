@@ -1,0 +1,135 @@
+{% extends "visitors/base.html" %}
+{% load static %}
+
+{% block title %}About Us | Vidyarthi Sahayyak Samiti{% endblock %}
+
+{% block content %}
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/about.css' %}">
+<section class="elite-hero">
+    <div class="hero-overlay">
+<div class="container text-center">
+                <h1 class="display-4 fw-bold">Vidyarthi Sahayyak Samiti</h1>
+            <p class="lead">Empowering Rural Students Since 1955</p>
+        </div>
+    </div>
+</section>
+<!-- MAIN ABOUT SECTION -->
+<section class="about-main container my-5">
+    <div class="row align-items-center">
+
+        <!-- IMAGE LEFT -->
+        <div class="col-md-5 mb-4">
+            <img src="{% static 'visitors/images/samiti_building.png' %}" 
+     class="img-fluid about-img" 
+ class="img-fluid about-img" alt="Samiti Building">
+        </div>
+
+        <!-- TEXT RIGHT -->
+        <div class="col-md-7 about-text">
+            <p>
+                Vidyarthi Sahayyak Samiti is an organisation which has transformed the lives of thousands 
+                of students from rural areas. Vidyarthi Sahayyak Samiti is a registered charitable trust 
+                under Maharashtra Public Trust Act 1950 with Charity Commissioner Office, Pune, having 
+                Registration No. E-219 (Pune).
+            </p>
+            <p>
+                Senior mathematician Dr. Achyutrao Apte, freedom fighter Haribhau Phatak, Smt. Sumitratai Kerkar 
+                and others started the work in 1955 with the objective of arranging lodging and boarding 
+                facilities at a very affordable cost in Pune, to boys from economically weaker sections.
+            </p>
+            <p>
+                Now Samiti has 8 hostels in Pune and 2 in Ahilyanagar where in all 1377 boys and girls are 
+                taking advantage of these facilities. Samiti is not merely a lodging and boarding trust. 
+                Apart from offering lodging and boarding facilities at concessional rates, more importance 
+                is accorded to the development of personality. Caste, creed, religion have no place in Samiti.
+            </p>
+        </div>
+
+    </div>
+</section>
+{% load static %}
+
+<!-- BOARD STRUCTURE -->
+<section class="container my-5 text-center fade-section">
+    <h3 class="section-title">Board of Trustees Structure</h3>
+
+<img src="{% static 'visitors/images/board_structure.png' %}" 
+         class="img-fluid about-full-img zoomable"
+         alt="Board Structure"
+         data-bs-toggle="modal"
+         data-bs-target="#imageModal"
+         onclick="openImage(this.src)">
+</section>
+
+<!-- ISO CERTIFICATE -->
+<section class="container my-5 text-center fade-section">
+    <h3 class="section-title">ISO Certification</h3>
+
+<img src="{% static 'visitors/images/iso_certificate.jpg' %}" 
+         class="img-fluid about-full-img zoomable"
+         alt="ISO Certificate"
+         data-bs-toggle="modal"
+         data-bs-target="#imageModal"
+         onclick="openImage(this.src)">
+</section>
+
+<!-- IMAGE MODAL -->
+<div class="modal fade" id="imageModal" tabindex="-1">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content bg-transparent border-0">
+      <div class="modal-body text-center">
+        <img id="modalImage" class="img-fluid rounded shadow-lg">
+      </div>
+    </div>
+  </div>
+</div>
+<!-- THREE COLUMN INFO SECTION -->
+<section class="about-info container my-5">
+    <div class="row text-start">
+
+        <!-- ABOUT SAMITI -->
+        <div class="col-md-4 mb-4">
+            <h4 class="info-title">ABOUT SAMITI</h4>
+            <p>
+                Samiti is trying to reach thousands of viewers through this website. The objective is that the viewer 
+                gets an idea about Samiti. Samiti has helped more than 8,000 students so far.
+            </p>
+            <p class="info-small">
+                <strong>Contact:</strong> 1182/1/4, Shivajinagar, Ferguson College Road, Pune 41005<br>
+                📞 9404855530, 020-25533631<br>
+                📧 info@samiti.org
+            </p>
+        </div>
+
+        <!-- HISTORY -->
+        <div class="col-md-4 mb-4">
+            <h4 class="info-title">HISTORY</h4>
+            <p>
+                The idea of helping students took root in the mind of Dr. Achyut Shankar Apte in 1955. While pursuing 
+                education abroad, he observed that local citizens and the government helped needy students.
+            </p>
+            <p>
+                On returning to India, he shared the idea with like-minded persons and began by arranging meals for 
+                5 students coming to Pune for education.
+            </p>
+        </div>
+
+        <!-- MANAGEMENT -->
+        <div class="col-md-4 mb-4">
+            <h4 class="info-title">MANAGEMENT</h4>
+            <p><strong>Board Of Trustees:</strong><br>
+               Decides objectives & policies and ensures implementation.
+            </p>
+            <p><strong>Advisory Board:</strong><br>
+               Helps decide objectives and policy issues affecting students.
+            </p>
+            <p><strong>Karyakarta Mandal:</strong><br>
+               53 dedicated social service members supervising Samiti’s functions.
+            </p>
+        </div>
+
+    </div>
+</section>
+<script src="{% static 'js/about.js' %}"></script>
+{% endblock %}

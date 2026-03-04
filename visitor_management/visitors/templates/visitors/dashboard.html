@@ -1,0 +1,78 @@
+{% extends "visitors/base.html" %}
+{% block content %}
+
+<div class="container-fluid py-4">
+
+    <h3 class="mb-4">Dashboard Overview</h3>
+
+    <div class="row g-4">
+
+        <!-- Total -->
+        <div class="col-md-3">
+            <div class="card shadow text-center p-3">
+                <h6 class="text-muted">Total Visitors</h6>
+                <h3 class="fw-bold text-primary">{{ total }}</h3>
+            </div>
+        </div>
+
+        <!-- IN -->
+        <div class="col-md-3">
+            <div class="card shadow text-center p-3">
+                <h6 class="text-muted">Currently IN</h6>
+                <h3 class="fw-bold text-success">{{ in_count }}</h3>
+            </div>
+        </div>
+
+        <!-- OUT -->
+        <div class="col-md-3">
+            <div class="card shadow text-center p-3">
+                <h6 class="text-muted">Checked OUT</h6>
+                <h3 class="fw-bold text-danger">{{ out_count }}</h3>
+            </div>
+        </div>
+
+        <!-- Today -->
+        <div class="col-md-3">
+            <div class="card shadow text-center p-3">
+                <h6 class="text-muted">Today</h6>
+                <h3 class="fw-bold">{{ today_count }}</h3>
+            </div>
+        </div>
+
+        <!-- Yesterday -->
+        <div class="col-md-3">
+            <div class="card shadow text-center p-3">
+                <h6 class="text-muted">Yesterday</h6>
+                <h3 class="fw-bold">{{ yesterday_count }}</h3>
+            </div>
+        </div>
+
+        <!-- Week -->
+        <div class="col-md-3">
+            <div class="card shadow text-center p-3">
+                <h6 class="text-muted">This Week</h6>
+                <h3 class="fw-bold">{{ week_count }}</h3>
+            </div>
+        </div>
+
+        <!-- Month -->
+        <div class="col-md-3">
+            <div class="card shadow text-center p-3">
+                <h6 class="text-muted">This Month</h6>
+                <h3 class="fw-bold">{{ month_count }}</h3>
+            </div>
+        </div>
+
+        <!-- Year -->
+        <div class="col-md-3">
+            <div class="card shadow text-center p-3">
+                <h6 class="text-muted">This Year</h6>
+                <h3 class="fw-bold">{{ year_count }}</h3>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
