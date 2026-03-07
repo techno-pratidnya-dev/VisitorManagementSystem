@@ -205,17 +205,15 @@
 
 <!-- Service Worker -->
 <script>
-window.addEventListener("load", function () {
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("{% static 'visitors/sw.js' %}")
-      .then(function (registration) {
-        console.log("Service Worker Registered:", registration.scope);
-      })
-      .catch(function (error) {
-        console.log("Service Worker failed:", error);
-      });
-  }
-});
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("{% static 'visitors/js/sw.js' %}")
+    .then(function () {
+      console.log("Service Worker Registered");
+    })
+    .catch(function (error) {
+      console.log("Service Worker failed:", error);
+    });
+}
 </script>
 
 <!-- Bootstrap -->
