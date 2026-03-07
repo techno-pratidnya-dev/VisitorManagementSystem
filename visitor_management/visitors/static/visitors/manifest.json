@@ -8,12 +8,12 @@
   "description": "Visitor Management System App",
   "icons": [
   {
-    "src": "/static/visitors/images/logo.jpg",
+    "src": "/static/visitors/images/logo.png",
     "sizes": "192x192",
     "type": "image/jpeg"
   },
   {
-    "src": "/static/visitors/images/logoB.jpg",
+    "src": "/static/visitors/images/logoB.png",
     "sizes": "512x512",
     "type": "image/jpeg"
   }
