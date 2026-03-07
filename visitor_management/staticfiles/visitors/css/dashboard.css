@@ -1,0 +1,223 @@
+/* ================= DESIGN SYSTEM ================= */
+
+:root {
+    --primary-dark: #0f172a;
+    --primary-accent: #2563eb;
+
+    --bg-main: #f1f5f9;
+    --bg-card: #ffffff;
+
+    --text-primary: #0f172a;
+    --text-secondary: #64748b;
+    --border-color: #e2e8f0;
+
+    --radius: 16px;
+    --transition: 0.3s ease;
+}
+
+/* ================= GLOBAL ================= */
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%);
+    color: var(--text-primary);
+    margin: 0;
+    padding: 0;
+    transition: var(--transition);
+}
+
+.container-fluid {
+    padding: 30px 40px;
+}
+
+/* ================= NAVBAR ================= */
+
+/* ================= STRONG PREMIUM NAVBAR ================= */
+
+.navbar-custom {
+background: linear-gradient(90deg, #1e3a8a, #2563eb) !important;
+    padding: 20px 40px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 10px 35px rgba(0,0,0,0.35);
+    border-bottom: 2px solid #1f2937;
+}
+
+/* Brand */
+.navbar-brand {
+    color: #ffffff !important;
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: 0.5px;
+}
+
+/* Links */
+.navbar-custom .nav-link {
+    color: #d1d5db !important;
+    font-weight: 500;
+    font-size: 14px;
+    margin-right: 30px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+/* Hover */
+.navbar-custom .nav-link:hover {
+    color: #ffffff !important;
+}
+
+/* Active link underline animation */
+.navbar-custom .nav-link.active::after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: #3b82f6;
+    border-radius: 10px;
+}
+
+/* Icons */
+.navbar-custom i {
+    color: #ffffff !important;
+    font-size: 16px;
+}
+
+/* Right side icons spacing */
+.navbar-custom .nav-item {
+    display: flex;
+    align-items: center;
+}
+
+/* ================= PAGE HEADER ================= */
+
+.page-header {
+    padding: 40px 0 25px 0;
+}
+
+.page-header h4 {
+    font-weight: 600;
+    font-size: 22px;
+    margin-bottom: 5px;
+}
+
+.page-header p {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+/* ================= STATS CARDS ================= */
+
+.stats-card {
+    background: linear-gradient(145deg, #ffffff, #f8fafc);
+    padding: 32px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 12px 40px rgba(15, 23, 42, 0.06);
+    transition: var(--transition);
+    height: 100%;
+}
+
+.stats-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 60px rgba(15, 23, 42, 0.12);
+}
+
+.stats-card h6 {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+}
+
+.stats-card h2 {
+    margin-top: 14px;
+    font-weight: 700;
+    font-size: 30px;
+    color: var(--text-primary);
+}
+
+/* ================= BUTTONS ================= */
+
+.btn-primary {
+    background-color: var(--primary-accent);
+    border: none;
+    border-radius: 10px;
+    padding: 8px 18px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+.btn-primary:hover {
+    background-color: #1d4ed8;
+}
+
+/* ================= TABLE DESIGN ================= */
+
+.table {
+    background-color: #ffffff;
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+
+.table thead {
+    background-color: #f1f5f9;
+    font-size: 13px;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+}
+
+.table tbody tr {
+    transition: var(--transition);
+}
+
+.table tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+/* ================= DARK MODE ================= */
+
+.dark-mode {
+    background: #111827;
+    color: #ffffff;
+}
+
+.dark-mode body {
+    background: #111827;
+}
+
+.dark-mode .navbar-custom {
+    background: #1f2937;
+    border-bottom: 1px solid #374151;
+}
+
+.dark-mode .stats-card {
+    background: #1f2937;
+    border: 1px solid #374151;
+    box-shadow: none;
+}
+
+.dark-mode .stats-card h6 {
+    color: #9ca3af;
+}
+
+.dark-mode .stats-card h2 {
+    color: #ffffff;
+}
+
+.dark-mode .table {
+    background-color: #1f2937;
+}
+
+.dark-mode .table thead {
+    background-color: #111827;
+    color: #9ca3af;
+}
+
+.dark-mode .table tbody tr:hover {
+    background-color: #374151;
+}

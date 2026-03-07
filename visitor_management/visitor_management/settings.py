@@ -44,6 +44,7 @@ INSTALLED_APPS = [
 # --------------------------------------------------
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -171,3 +172,15 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 # CUSTOM USER MODEL
 # --------------------------------------------------
 AUTH_USER_MODEL = 'visitors.CustomUser'
+
+import os
+from pathlib import Path
+
+# Static files
+STATIC_URL = '/static/'
+
+# collectstatic साठी
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Whitenoise storage
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'

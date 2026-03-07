@@ -1,1 +1,1 @@
-web: gunicorn visitor_management.wsgi
+web: gunicorn visitor_management.wsgi:application
