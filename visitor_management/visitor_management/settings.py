@@ -174,13 +174,13 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 AUTH_USER_MODEL = 'visitors.CustomUser'
 
 import os
-from pathlib import Path
 
-# Static files
 STATIC_URL = '/static/'
 
-# collectstatic साठी
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# Whitenoise storage
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'visitors/static')
+]
+
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
