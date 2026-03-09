@@ -20,6 +20,15 @@
     <div class="login-card">
         <h2>Visitor Management System</h2>
 
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
         <form method="POST">
             {% csrf_token %}
 
@@ -49,10 +58,6 @@
 </div>
 
         </form>
-
-        {% if error %}
-            <p class="error-msg">{{ error }}</p>
-        {% endif %}
     </div>
 </div>
 

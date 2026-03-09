@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
 from django.utils import timezone
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
@@ -7,6 +8,9 @@ from django.contrib.auth import get_user_model
 from django.contrib import messages
 from django.http import HttpResponse, HttpResponseForbidden
 from django.db.models import Q
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_str
 from django.core.paginator import Paginator
 from django.core.mail import send_mail
 from django.conf import settings
@@ -77,7 +81,7 @@ def register_view(request):
             messages.error(request, "User with this email already exists.")
             return redirect('register')
 
-        User.objects.create_user(
+        user = User.objects.create_user(
             username=email,
             email=email,
             password=password,
@@ -85,7 +89,22 @@ def register_view(request):
             role='STAFF'
         )
 
-        messages.success(request, "Registration successful. Please login.")
+        uid = urlsafe_base64_encode(force_bytes(user.pk))
+        token = default_token_generator.make_token(user)
+        domain = request.get_host()
+        link = reverse('verify_email_confirm', kwargs={'uidb64': uid, 'token': token})
+        verify_link = f"{request.scheme}://{domain}{link}"
+        
+        threading.Thread(
+            target=send_email_thread,
+            args=(
+                'VMS - Verify Your Email',
+                f'Hi {name},\n\nPlease click the link below to verify your email:\n{verify_link}',
+                [user.email]
+            )
+        ).start()
+
+        messages.success(request, "Registration successful. Please check your email to verify your account before logging in.")
         return redirect('login')
 
     return render(request, 'visitors/registration.html')
@@ -110,29 +129,38 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
 
         if user:
-            otp = random.randint(100000, 999999)
-            print(f"GENERATED OTP for {user.email}: {otp}")
+            if not getattr(user, 'is_email_verified', True):
+                messages.error(request, "Please verify your email address before logging in. Check your inbox.")
+                return redirect('login')
 
-            request.session['otp'] = otp
-            request.session['user_id'] = user.id
-            request.session['email'] = user.email
-            request.session['otp_time'] = timezone.now().timestamp()
-
-            threading.Thread(
-                target=send_email_thread,
-                args=(
-                    'VMS Login OTP',
-                    f'Your OTP is {otp}',
-                    [user.email]
-                )
-            ).start()
-
-            return redirect('otp_verify')
+            login(request, user)
+            messages.success(request, f"Welcome back, {user.first_name or user.username}!")
+            return redirect('role_redirect')
 
         else:
             messages.error(request, "Invalid username or password.")
 
     return render(request, 'visitors/login.html')
+# =====================
+# VERIFY EMAIL
+# =====================
+def verify_email_confirm(request, uidb64, token):
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+
+    if user is not None and default_token_generator.check_token(user, token):
+        user.is_email_verified = True
+        user.save()
+        messages.success(request, 'Your email has been verified. You can now log in.')
+        return redirect('login')
+    else:
+        messages.error(request, 'The verification link is invalid or has expired.')
+        return redirect('register')
+
+
 # =====================
 # LOGOUT
 # =====================
