@@ -18,10 +18,13 @@ SECRET_KEY = 'django-insecure-change-this-in-production'
 
 DEBUG = True
 
+import os
+
 ALLOWED_HOSTS = [
     "visitormanagementsystem-5eda.onrender.com",
     "localhost",
-    "127.0.0.1"
+    "127.0.0.1",
+    "*"  # Allows any hostname since Render might ping internal URLs
 ]
 
 # --------------------------------------------------
@@ -92,11 +95,17 @@ WSGI_APPLICATION = 'visitor_management.wsgi.application'
 # --------------------------------------------------
 # DATABASE (SQLite)
 # --------------------------------------------------
+# --------------------------------------------------
+# DATABASE (PostgreSQL / SQLite fallback)
+# --------------------------------------------------
+import dj_database_url
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        # Falls back to SQLite if DATABASE_URL is not provided (e.g. locally)
+        default='sqlite:///' + str(BASE_DIR / 'db.sqlite3'),
+        conn_max_age=600
+    )
 }
 
 
@@ -145,6 +154,11 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+# Cloudinary Integration for Persistent Media Storage on Render
+if 'CLOUDINARY_URL' in os.environ:
+    INSTALLED_APPS.extend(['cloudinary', 'cloudinary_storage'])
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
 
 # --------------------------------------------------
 # AUTH REDIRECT SETTINGS
@@ -173,11 +187,7 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 # --------------------------------------------------
 AUTH_USER_MODEL = 'visitors.CustomUser'
 
-import os
-
 STATIC_URL = '/static/'
-
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'visitors/static')
