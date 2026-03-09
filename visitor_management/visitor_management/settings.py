@@ -185,8 +185,12 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 # --------------------------------------------------
 # CUSTOM USER MODEL
-# --------------------------------------------------
 AUTH_USER_MODEL = 'visitors.CustomUser'
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'visitors.models.EmailBackend',
+]
 
 STATIC_URL = '/static/'
 
