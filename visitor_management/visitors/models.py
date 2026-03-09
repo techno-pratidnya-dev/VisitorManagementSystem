@@ -10,6 +10,12 @@ from django.conf import settings
 from django.contrib.auth.backends import ModelBackend
 from django.db.models import Q
 
+from django.db import models
+from django.contrib.auth.models import AbstractUser
+
+class CustomUser(AbstractUser):
+    is_email_verified = models.BooleanField(default=False)
+
 class EmailBackend(ModelBackend):
     def authenticate(self, request, username=None, password=None, **kwargs):
         UserModel = get_user_model()
