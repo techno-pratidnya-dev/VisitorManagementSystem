@@ -16,8 +16,23 @@ from datetime import timedelta
 import base64
 import csv
 import random
+import threading
 
 from .models import Visitor, VisitorEditLog
+
+def send_email_thread(subject, message, recipient_list):
+    try:
+        from django.core.mail import send_mail
+        from django.conf import settings
+        send_mail(
+            subject,
+            message,
+            settings.EMAIL_HOST_USER,
+            recipient_list,
+            fail_silently=True
+        )
+    except Exception as e:
+        print(f"Email failed: {e}")
 @login_required
 def role_redirect(request):
     user = request.user
@@ -96,19 +111,21 @@ def login_view(request):
 
         if user:
             otp = random.randint(100000, 999999)
+            print(f"GENERATED OTP for {user.email}: {otp}")
 
             request.session['otp'] = otp
             request.session['user_id'] = user.id
             request.session['email'] = user.email
             request.session['otp_time'] = timezone.now().timestamp()
 
-            send_mail(
-                'VMS Login OTP',
-                f'Your OTP is {otp}',
-                settings.EMAIL_HOST_USER,
-                [user.email],
-                fail_silently=True
-            )
+            threading.Thread(
+                target=send_email_thread,
+                args=(
+                    'VMS Login OTP',
+                    f'Your OTP is {otp}',
+                    [user.email]
+                )
+            ).start()
 
             return redirect('otp_verify')
 
@@ -356,7 +373,10 @@ def otp_verify(request):
         messages.error(request, "OTP expired. Please login again.")
         return redirect('login')
 
-    masked_email = user_email[0] + "***@" + user_email.split("@")[1]
+    if "@" in user_email:
+        masked_email = user_email[0] + "***@" + user_email.split("@")[1]
+    else:
+        masked_email = user_email[0] + "***"
 
     if request.method == "POST":
         entered_otp = request.POST.get('otp')
@@ -400,13 +420,14 @@ def resend_otp(request):
     request.session['otp'] = new_otp
     request.session['otp_time'] = timezone.now().timestamp()
 
-    send_mail(
-        'VMS Resend OTP',
-        f'Your new OTP is {new_otp}',
-        settings.EMAIL_HOST_USER,
-        [user.email],
-        fail_silently=True
-    )
+    threading.Thread(
+        target=send_email_thread,
+        args=(
+            'VMS Resend OTP',
+            f'Your new OTP is {new_otp}',
+            [user.email]
+        )
+    ).start()
 
     return redirect('otp_verify')
 #---------------

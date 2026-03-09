@@ -104,7 +104,7 @@ DATABASES = {
     'default': dj_database_url.config(
         # Falls back to SQLite if DATABASE_URL is not provided (e.g. locally)
         default='sqlite:///' + str(BASE_DIR / 'db.sqlite3'),
-        conn_max_age=600
+        conn_max_age=600 if os.environ.get('DATABASE_URL', '').startswith('postgres') else 0
     )
 }
 
@@ -179,6 +179,7 @@ EMAIL_USE_TLS = True
 
 EMAIL_HOST_USER = "pratidnyaagalave0105@gmail.com"
 EMAIL_HOST_PASSWORD = "wswnggbaxynmtgkr"   # remove spaces
+EMAIL_TIMEOUT = 5
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
