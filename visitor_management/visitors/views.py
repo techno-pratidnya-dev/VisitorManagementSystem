@@ -66,7 +66,8 @@ def register_view(request):
             username=email,
             email=email,
             password=password,
-            first_name=name
+            first_name=name,
+            role='STAFF'
         )
 
         messages.success(request, "Registration successful. Please login.")
@@ -106,6 +107,7 @@ def login_view(request):
                 f'Your OTP is {otp}',
                 settings.EMAIL_HOST_USER,
                 [user.email],
+                fail_silently=True
             )
 
             return redirect('otp_verify')
@@ -403,6 +405,7 @@ def resend_otp(request):
         f'Your new OTP is {new_otp}',
         settings.EMAIL_HOST_USER,
         [user.email],
+        fail_silently=True
     )
 
     return redirect('otp_verify')
