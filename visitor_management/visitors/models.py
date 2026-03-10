@@ -2,34 +2,10 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
-
-
-# =========================================================
-# EMAIL BACKEND (LOGIN WITH EMAIL OR USERNAME)
-# =========================================================
-from django.contrib.auth.backends import ModelBackend
 from django.db.models import Q
 
-from django.db import models
-from django.contrib.auth.models import AbstractUser
-
-class CustomUser(AbstractUser):
-    is_email_verified = models.BooleanField(default=False)
-
-class EmailBackend(ModelBackend):
-    def authenticate(self, request, username=None, password=None, **kwargs):
-        UserModel = get_user_model()
-        try:
-            user = UserModel.objects.get(Q(username__iexact=username) | Q(email__iexact=username))
-        except UserModel.DoesNotExist:
-            return None
-        
-        if user.check_password(password) and self.user_can_authenticate(user):
-            return user
-        return None
-
 # =========================================================
-# CUSTOM USER MODEL (FIRST DEFINE THIS)
+# CUSTOM USER MODEL
 # =========================================================
 class CustomUser(AbstractUser):
     ROLE_CHOICES = (

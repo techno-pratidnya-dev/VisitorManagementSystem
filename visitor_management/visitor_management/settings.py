@@ -189,7 +189,7 @@ AUTH_USER_MODEL = 'visitors.CustomUser'
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
-    'visitors.models.EmailBackend',
+    'visitors.backends.EmailBackend',
 ]
 
 STATIC_URL = '/static/'
