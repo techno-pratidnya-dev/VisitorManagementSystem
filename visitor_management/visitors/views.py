@@ -43,20 +43,15 @@ from django.shortcuts import redirect
 @login_required
 def role_redirect(request):
 
-    user = request.user
-    role = getattr(user, "role", None)
+    role = request.user.role
 
-    if role == "ADMIN":
-        return redirect('dashboard')
-
-    elif role == "STAFF":
-        return redirect('visitor_list')
+    if role in ["ADMIN", "STAFF"]:
+        return redirect("visitor_list")
 
     elif role == "SECURITY":
-        return redirect('visitor_list')   # security visitors check page
+        return redirect("home")
 
-    # default fallback
-    return redirect('home')
+    return redirect("home")
 # =====================
 # INDEX (Landing Page)
 # =====================
@@ -122,8 +117,6 @@ def register_view(request):
 # =====================
 # LOGIN WITH OTP
 # ====================
-
-
 def login_view(request):
 
     if request.user.is_authenticated:
@@ -142,8 +135,25 @@ def login_view(request):
                 messages.error(request, "Please verify your email before login.")
                 return redirect('login')
 
-            login(request, user)
-            return redirect('role_redirect')
+            # 🔐 Generate OTP
+            otp = random.randint(100000, 999999)
+
+            request.session['otp'] = otp
+            request.session['user_id'] = user.id
+            request.session['email'] = user.email
+            request.session['otp_time'] = timezone.now().timestamp()
+
+            # 📧 Send OTP Email
+            threading.Thread(
+                target=send_email_thread,
+                args=(
+                    'VMS Login OTP',
+                    f'Your OTP is {otp}',
+                    [user.email]
+                )
+            ).start()
+
+            return redirect('otp_verify')
 
         else:
             messages.error(request, "Invalid username or password.")
@@ -572,14 +582,12 @@ def checkin_page(request):
     visitors = Visitor.objects.filter(status='IN').order_by('-entry_time')
     return render(request, 'visitors/checkin_page.html', {'visitors': visitors})
 
+    
+@login_required
+def visitor_list(request):
 
-from django.contrib.auth import get_user_model
+    if request.user.role not in ["ADMIN", "STAFF"]:
+        return redirect("home")   # unauthorized users
 
-User = get_user_model()
-
-if not User.objects.filter(username="admin").exists():
-    User.objects.create_superuser(
-        username="VSS",
-        email="techconnectpratidnya@gmail.com",
-        password="VSS@2026"
-    )
+    # visitor list logic
+    return render(request, "visitor_list.html")
