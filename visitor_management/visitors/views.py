@@ -37,20 +37,26 @@ def send_email_thread(subject, message, recipient_list):
         )
     except Exception as e:
         print(f"Email failed: {e}")
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect
+
 @login_required
 def role_redirect(request):
-    user = request.user
 
-    if user.role == 'ADMIN':
+    user = request.user
+    role = getattr(user, "role", None)
+
+    if role == "ADMIN":
         return redirect('dashboard')
 
-    elif user.role == 'STAFF':
+    elif role == "STAFF":
         return redirect('visitor_list')
 
-    elif user.role == 'SECURITY':
-        return redirect('checkin_page')
+    elif role == "SECURITY":
+        return redirect('visitor_list')   # security visitors check page
 
-    return redirect('login')
+    # default fallback
+    return redirect('home')
 # =====================
 # INDEX (Landing Page)
 # =====================
@@ -121,33 +127,29 @@ def register_view(request):
 def login_view(request):
 
     if request.user.is_authenticated:
-        return redirect('home')
+        return redirect('role_redirect')
+
     if request.method == "POST":
+
         username = request.POST.get('username')
         password = request.POST.get('password')
-        print(f"DEBUG: Login attempt - username: {username}, password: {password}")
 
         user = authenticate(request, username=username, password=password)
-        print(f"DEBUG: Authenticate result: {user}")
 
-        if user:
-            print(f"DEBUG: User found - is_active: {user.is_active}, is_email_verified: {getattr(user, 'is_email_verified', 'N/A')}")
-            if not getattr(user, 'is_email_verified', True):
-                print("DEBUG: Email not verified")
-                messages.error(request, "Please verify your email address before logging in. Check your inbox.")
+        if user is not None:
+
+            if not user.is_email_verified:
+                messages.error(request, "Please verify your email before login.")
                 return redirect('login')
 
             login(request, user)
-            print("DEBUG: Login successful")
-            messages.success(request, f"Welcome back, {user.first_name or user.username}!")
             return redirect('role_redirect')
 
         else:
-            print("DEBUG: Authentication failed")
             messages.error(request, "Invalid username or password.")
 
     return render(request, 'visitors/login.html')
-# =====================
+
 # VERIFY EMAIL
 # =====================
 def verify_email_confirm(request, uidb64, token):
