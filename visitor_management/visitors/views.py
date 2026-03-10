@@ -125,19 +125,25 @@ def login_view(request):
     if request.method == "POST":
         username = request.POST.get('username')
         password = request.POST.get('password')
+        print(f"DEBUG: Login attempt - username: {username}, password: {password}")
 
         user = authenticate(request, username=username, password=password)
+        print(f"DEBUG: Authenticate result: {user}")
 
         if user:
+            print(f"DEBUG: User found - is_active: {user.is_active}, is_email_verified: {getattr(user, 'is_email_verified', 'N/A')}")
             if not getattr(user, 'is_email_verified', True):
+                print("DEBUG: Email not verified")
                 messages.error(request, "Please verify your email address before logging in. Check your inbox.")
                 return redirect('login')
 
             login(request, user)
+            print("DEBUG: Login successful")
             messages.success(request, f"Welcome back, {user.first_name or user.username}!")
             return redirect('role_redirect')
 
         else:
+            print("DEBUG: Authentication failed")
             messages.error(request, "Invalid username or password.")
 
     return render(request, 'visitors/login.html')

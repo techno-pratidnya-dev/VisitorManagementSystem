@@ -8,14 +8,14 @@
     <div class="container">
 <div class="row align-items-center">
             <div class="col-lg-6">
-                <h1 class="hero-title fade-up">
-                    Make your workplace <br> Safe & Secure
-                </h1>
+                <h1 class="hero-title fade-up">Smart Visitor Management System</h1>
+                <h3>Secure • Simple • Organized</h3>
 
                 <p class="hero-text mt-4 fade-up">
-                    The safety of your employees and the environment in which they operate is paramount.
-                    Employees and guests can check in safely with our Visitor Management System.
+                    Welcome to the Vidyarthi Sahayyak Samiti Visitor Management System, a digital platform designed to manage and monitor visitor entries efficiently.
+It ensures secure check-in, organized visitor records, and smooth entry management for students, guests, and staff visiting the organization.
                 </p>
+                <p class="hero-text mt-4 fade-up">Our system helps maintain safety, transparency, and better administration while providing a fast and convenient visitor registration process.</p>
 
                 {% if user.is_authenticated %}
                     <a href="{% url 'dashboard' %}" class="btn btn-primary mt-4 px-4 fade-up">
@@ -29,7 +29,7 @@
             </div>
 
             <div class="col-lg-6 text-center">
-                <img src="https://images.unsplash.com/photo-1556740738-b6a63e27c4df"
+                    <img src="{% static 'visitors/images/resitation.jpg' %}"
                      class="img-fluid hero-image rounded"
                      alt="Reception">
             </div>

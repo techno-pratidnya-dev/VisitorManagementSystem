@@ -1,0 +1,5 @@
+--- Checking for Dependent Data ---
+Model: django.contrib.admin.models.LogEntry has Foreign Key to CustomUser in field: user
+Model: visitors.models.Visitor has Foreign Key to CustomUser in field: created_by
+  CONFLICT FOUND! User ID 2 is used in Visitor (1 records)
+Model: visitors.models.VisitorEditLog has Foreign Key to CustomUser in field: edited_by
