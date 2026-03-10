@@ -199,7 +199,6 @@ STATICFILES_DIRS = [
 ]
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
 CSRF_TRUSTED_ORIGINS = [
     "https://visitormanagementsystem-5eda.onrender.com"
 ]
@@ -207,7 +206,6 @@ CSRF_TRUSTED_ORIGINS = [
 
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
 SESSION_COOKIE_SAMESITE = "Lax"
 CSRF_COOKIE_SAMESITE = "Lax"
 
