@@ -133,6 +133,7 @@ def login_view(request):
 
             # 🔐 Generate OTP
             otp = random.randint(100000, 999999)
+            print("OTP:", otp)
 
             request.session['otp'] = otp
             request.session['user_id'] = user.id
@@ -590,3 +591,14 @@ def delete_visitor(request, id):
 def checkin_page(request):
     visitors = Visitor.objects.filter(status='IN').order_by('-entry_time')
     return render(request, 'visitors/checkin_page.html', {'visitors': visitors})
+
+
+def test_mail(request):
+    send_mail(
+        "Test Email",
+        "Django email working",
+        settings.EMAIL_HOST_USER,
+        ["pratidnyaagalave0105@gmail.com"],
+        fail_silently=False,
+    )
+    return HttpResponse("Email sent")

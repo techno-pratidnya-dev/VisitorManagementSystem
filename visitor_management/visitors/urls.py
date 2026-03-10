@@ -16,6 +16,7 @@ urlpatterns = [
     path('resend-otp/', views.resend_otp, name='resend_otp'),
     path('logout/', views.logout_view, name='logout'),
     path('register/', views.register_view, name='register'),
+    
     path('verify-email/<uidb64>/<token>/', views.verify_email_confirm, name='verify_email_confirm'),
 
     # =====================
