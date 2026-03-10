@@ -571,3 +571,15 @@ def delete_visitor(request, id):
 def checkin_page(request):
     visitors = Visitor.objects.filter(status='IN').order_by('-entry_time')
     return render(request, 'visitors/checkin_page.html', {'visitors': visitors})
+
+
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
+if not User.objects.filter(username="admin").exists():
+    User.objects.create_superuser(
+        username="VSS",
+        email="techconnectpratidnya@gmail.com",
+        password="VSS@2026"
+    )
