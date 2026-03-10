@@ -178,7 +178,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
 EMAIL_HOST_USER = "pratidnyaagalave0105@gmail.com"
-EMAIL_HOST_PASSWORD = "khpz gugx xvci xoyk"
+EMAIL_HOST_PASSWORD = "khpzgugxxvcixoyk"
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 EMAIL_TIMEOUT = 10

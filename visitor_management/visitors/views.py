@@ -26,14 +26,12 @@ from .models import Visitor, VisitorEditLog
 
 def send_email_thread(subject, message, recipient_list):
     try:
-        from django.core.mail import send_mail
-        from django.conf import settings
         send_mail(
             subject,
             message,
             settings.EMAIL_HOST_USER,
             recipient_list,
-            fail_silently=True
+            fail_silently=False
         )
     except Exception as e:
         print(f"Email failed: {e}")
@@ -142,14 +140,11 @@ def login_view(request):
             request.session['otp_time'] = timezone.now().timestamp()
 
             # 📧 Send OTP Email
-            threading.Thread(
-                target=send_email_thread,
-                args=(
-                    'VMS Login OTP',
-                    f'Your OTP is {otp}',
-                    [user.email]
-                )
-            ).start()
+            send_email_thread(
+    "VMS Login OTP",
+    f"Your OTP is {otp}",
+    [user.email]
+)
 
             return redirect('otp_verify')
 
@@ -595,16 +590,3 @@ def delete_visitor(request, id):
 def checkin_page(request):
     visitors = Visitor.objects.filter(status='IN').order_by('-entry_time')
     return render(request, 'visitors/checkin_page.html', {'visitors': visitors})
-
-    
-@login_required
-def visitor_list(request):
-
-    if request.user.role not in ["ADMIN", "STAFF"]:
-        return redirect("home")
-
-    visitors = Visitor.objects.all().order_by('-entry_time')
-
-    return render(request, 'visitors/visitor_list.html', {
-        'visitors': visitors
-    })
