@@ -37,20 +37,18 @@ def send_email_thread(subject, message, recipient_list):
         )
     except Exception as e:
         print(f"Email failed: {e}")
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect
+
 
 @login_required
 def role_redirect(request):
 
     role = request.user.role
 
+    # Admin and Staff go to visitor list
     if role in ["ADMIN", "STAFF"]:
         return redirect("visitor_list")
 
-    elif role == "SECURITY":
-        return redirect("home")
-
+    # Security and others go to home
     return redirect("home")
 # =====================
 # INDEX (Landing Page)
@@ -255,21 +253,35 @@ def add_visitor(request):
 # =====================
 # VISITOR LIST
 # =====================
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from django.db.models import Q
+from django.core.paginator import Paginator
+from .models import Visitor
+
 @login_required
 def visitor_list(request):
 
+    # ❌ Security cannot access visitor list
+    if request.user.role not in ["ADMIN", "STAFF"]:
+        return redirect("home")
+
+    # ✅ Admin sees all visitors
     if request.user.role == "ADMIN":
-        visitors = Visitor.objects.all().order_by('-entry_time')
+        visitors = Visitor.objects.all().order_by("-entry_time")
+
+    # ✅ Staff sees only their visitors
     else:
         visitors = Visitor.objects.filter(
             created_by=request.user
-        ).order_by('-entry_time')
+        ).order_by("-entry_time")
 
-    from_date = request.GET.get('from_date')
-    to_date = request.GET.get('to_date')
-    status = request.GET.get('status')
-    search = request.GET.get('search')
-    export = request.GET.get('export')
+    # Filters
+    from_date = request.GET.get("from_date")
+    to_date = request.GET.get("to_date")
+    status = request.GET.get("status")
+    search = request.GET.get("search")
+    export = request.GET.get("export")
 
     if from_date and to_date:
         visitors = visitors.filter(entry_time__date__range=[from_date, to_date])
@@ -284,22 +296,24 @@ def visitor_list(request):
             Q(purpose__icontains=search)
         )
 
+    # CSV Export
     if export == "csv":
         return export_visitors_csv(visitors)
 
+    # Pagination
     paginator = Paginator(visitors, 10)
-    page_number = request.GET.get('page')
+    page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
     context = {
-        'visitors': page_obj,
-        'page_obj': page_obj,
-        'total': visitors.count(),
-        'in_count': visitors.filter(status='IN').count(),
-        'out_count': visitors.filter(status='OUT').count(),
+        "visitors": page_obj,
+        "page_obj": page_obj,
+        "total": visitors.count(),
+        "in_count": visitors.filter(status="IN").count(),
+        "out_count": visitors.filter(status="OUT").count(),
     }
 
-    return render(request, 'visitors/visitor_list.html', context)
+    return render(request, "visitors/visitor_list.html", context)
 # =====================
 # EXPORT CSV
 # =====================
@@ -587,7 +601,10 @@ def checkin_page(request):
 def visitor_list(request):
 
     if request.user.role not in ["ADMIN", "STAFF"]:
-        return redirect("home")   # unauthorized users
+        return redirect("home")
 
-    # visitor list logic
-    return render(request, "visitor_list.html")
+    visitors = Visitor.objects.all().order_by('-entry_time')
+
+    return render(request, 'visitors/visitor_list.html', {
+        'visitors': visitors
+    })
