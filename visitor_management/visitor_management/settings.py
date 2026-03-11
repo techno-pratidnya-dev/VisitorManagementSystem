@@ -173,12 +173,13 @@ LOGOUT_REDIRECT_URL = '/login/'
 # --------------------------------------------------
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "smtp.gmail.com"
+
+EMAIL_HOST = "smtp-relay.brevo.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
 EMAIL_HOST_USER = "pratidnyaagalave0105@gmail.com"
-EMAIL_HOST_PASSWORD = "khpzgugxxvcixoyk"
+EMAIL_HOST_PASSWORD = "xsmtpsib-30059011c98b6cbab53c7fd383d909698369346718016f0b05b4c5a3d23e7be1-CryjgI3E9ULCZYNe"
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 EMAIL_TIMEOUT = 10
