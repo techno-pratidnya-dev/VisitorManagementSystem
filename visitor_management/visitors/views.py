@@ -4,6 +4,7 @@ from django.utils import timezone
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
+User = get_user_model()
 
 from django.contrib import messages
 from django.http import HttpResponse, HttpResponseForbidden
@@ -67,7 +68,6 @@ def home(request):
 # =====================
 # REGISTER
 # =====================
-User = get_user_model()
 def register_view(request):
     if request.method == "POST":
         name = request.POST.get('name')
@@ -86,26 +86,13 @@ def register_view(request):
             role='STAFF'
         )
 
-        uid = urlsafe_base64_encode(force_bytes(user.pk))
-        token = default_token_generator.make_token(user)
-        domain = request.get_host()
-        link = reverse('verify_email_confirm', kwargs={'uidb64': uid, 'token': token})
-        verify_link = f"{request.scheme}://{domain}{link}"
-        
-        threading.Thread(
-            target=send_email_thread,
-            args=(
-                'VMS - Verify Your Email',
-                f'Hi {name},\n\nPlease click the link below to verify your email:\n{verify_link}',
-                [user.email]
-            )
-        ).start()
-
-        messages.success(request, "Registration successful. Please check your email to verify your account before logging in.")
+        messages.success(
+            request,
+            "Registration successful. Please check your email to verify your account before logging in."
+        )
         return redirect('login')
 
     return render(request, 'visitors/registration.html')
-
 
 # =====================
 # LOGIN
@@ -141,10 +128,12 @@ def login_view(request):
             request.session['otp_time'] = timezone.now().timestamp()
 
             # 📧 Send OTP Email
-            send_email_thread(
+            send_mail(
     "VMS Login OTP",
     f"Your OTP is {otp}",
-    [user.email]
+    settings.DEFAULT_FROM_EMAIL,
+    [user.email],
+    fail_silently=False,
 )
 
             return redirect('otp_verify')
@@ -476,14 +465,13 @@ def resend_otp(request):
     request.session['otp'] = new_otp
     request.session['otp_time'] = timezone.now().timestamp()
 
-    threading.Thread(
-        target=send_email_thread,
-        args=(
-            'VMS Resend OTP',
-            f'Your new OTP is {new_otp}',
-            [user.email]
-        )
-    ).start()
+    send_mail(
+    "VMS Resend OTP",
+    f"Your new OTP is {new_otp}",
+    settings.DEFAULT_FROM_EMAIL,
+    [user.email],
+    fail_silently=False,
+)
 
     return redirect('otp_verify')
 #---------------
@@ -597,7 +585,7 @@ def test_mail(request):
     send_mail(
         "Test Email",
         "Django email working",
-        settings.EMAIL_HOST_USER,
+        settings.DEFAULT_FROM_EMAIL,
         ["pratidnyaagalave0105@gmail.com"],
         fail_silently=False,
     )
