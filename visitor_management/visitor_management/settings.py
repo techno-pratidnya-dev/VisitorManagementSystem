@@ -183,7 +183,7 @@ EMAIL_HOST_USER = "a48ea3001@smtp-brevo.com"
 EMAIL_HOST_PASSWORD = "xsmtpsib-30059011c98b6cbab53c7fd383d909698369346718016f0b05b4c5a3d23e7be1-4OqPahRqgXmbqfeJ"
 
 DEFAULT_FROM_EMAIL = "pratidnyaagalave0105@gmail.com"
-EMAIL_TIMEOUT = 10
+EMAIL_TIMEOUT = 30
 # --------------------------------------------------
 # CUSTOM USER MODEL
 AUTH_USER_MODEL = 'visitors.CustomUser'

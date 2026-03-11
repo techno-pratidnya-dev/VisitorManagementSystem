@@ -35,7 +35,7 @@ def send_email_thread(subject, message, recipient_list):
             fail_silently=False
         )
     except Exception as e:
-        print(f"Email failed: {e}")
+        print("Email failed:", e)
 
 
 @login_required
@@ -128,13 +128,14 @@ def login_view(request):
             request.session['otp_time'] = timezone.now().timestamp()
 
             # 📧 Send OTP Email
-            send_mail(
-    "VMS Login OTP",
-    f"Your OTP is {otp}",
-    settings.DEFAULT_FROM_EMAIL,
-    [user.email],
-    fail_silently=False,
-)
+            threading.Thread(
+    target=send_email_thread,
+    args=(
+        "VMS Login OTP",
+        f"Your OTP is {otp}",
+        [user.email]
+    )
+).start()
 
             return redirect('otp_verify')
 
