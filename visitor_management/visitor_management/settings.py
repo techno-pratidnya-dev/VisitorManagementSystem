@@ -168,21 +168,31 @@ LOGIN_REDIRECT_URL = '/dashboard/'
 LOGOUT_REDIRECT_URL = '/login/'
 
 
-## --------------------------------------------------
-# EMAIL CONFIGURATION (GMAIL SMTP)
+# --------------------------------------------------
+# EMAIL CONFIGURATION
 # --------------------------------------------------
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
-EMAIL_HOST = "smtp-relay.brevo.com"
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_USE_SSL = False
+# --- RECOMMENDED: GMAIL CONFIGURATION ---
+# To use Gmail, uncomment these and set your App Password:
+# EMAIL_HOST = "smtp.gmail.com"
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = "your_gmail@gmail.com"
+# EMAIL_HOST_PASSWORD = "your_16_digit_app_password"
+# DEFAULT_FROM_EMAIL = "your_gmail@gmail.com"
 
-EMAIL_HOST_USER = "a48ea3001@smtp-brevo.com"
-EMAIL_HOST_PASSWORD = "xsmtpsib-30059011c98b6cbab53c7fd383d909698369346718016f0b05b4c5a3d23e7be1-4OqPahRqgXmbqfeJ"
+# --- CURRENT: BREVO CONFIGURATION (Requires account activation) ---
+EMAIL_HOST = os.environ.get("EMAIL_HOST", "smtp-relay.brevo.com")
+EMAIL_PORT = int(os.environ.get("EMAIL_PORT", 587))
+EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS", "True") == "True"
+EMAIL_USE_SSL = os.environ.get("EMAIL_USE_SSL", "False") == "True"
 
-DEFAULT_FROM_EMAIL = "pratidnyaagalave0105@gmail.com"
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "a48ea3001@smtp-brevo.com")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "xsmtpsib-30059011c98b6cbab53c7fd383d909698369346718016f0b05b4c5a3d23e7be1-HqjIsrGgqFxaX3FV")
+
+DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "pratidnyaagalave0105@gmail.com")
 EMAIL_TIMEOUT = 30
 # --------------------------------------------------
 # CUSTOM USER MODEL

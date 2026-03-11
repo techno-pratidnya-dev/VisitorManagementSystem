@@ -27,15 +27,17 @@ from .models import Visitor, VisitorEditLog
 
 def send_email_thread(subject, message, recipient_list):
     try:
-        send_mail(
+        sent = send_mail(
             subject,
             message,
             settings.DEFAULT_FROM_EMAIL,
             recipient_list,
             fail_silently=False
         )
+        print(f"Email sent successfully to {recipient_list}")
     except Exception as e:
-        print("Email failed:", e)
+        print(f"CRITICAL: Email failed to {recipient_list}. Error: {e}")
+        # Optionally log to a file if needed, but for now print is visible in console/logs
 
 
 @login_required
