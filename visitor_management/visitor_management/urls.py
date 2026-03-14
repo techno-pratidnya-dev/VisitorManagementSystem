@@ -2,13 +2,14 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from visitors.views import test_mail
+from visitors import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 
     # email test url
-    path('test-mail/', test_mail),
+    path('test-mail/', views.test_mail),
+    path('test-email/', views.test_email),
 
     path('', include('visitors.urls')),
 ]
