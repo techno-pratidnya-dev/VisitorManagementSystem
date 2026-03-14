@@ -12,8 +12,6 @@ urlpatterns = [
     # AUTHENTICATION
     # =====================
     path('login/', views.login_view, name='login'),
-    path('otp/', views.otp_verify, name='otp_verify'),
-    path('resend-otp/', views.resend_otp, name='resend_otp'),
     path('logout/', views.logout_view, name='logout'),
     path('register/', views.register_view, name='register'),
     

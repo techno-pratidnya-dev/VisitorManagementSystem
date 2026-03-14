@@ -6,11 +6,6 @@ from visitors import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-
-    # email test url
-    path('test-mail/', views.test_mail),
-    path('test-email/', views.test_email),
-
     path('', include('visitors.urls')),
 ]
 

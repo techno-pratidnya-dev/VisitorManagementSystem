@@ -90,7 +90,7 @@ def register_view(request):
 
         messages.success(
             request,
-            "Registration successful. Please check your email to verify your account before logging in."
+            "Registration successful. You can now log in."
         )
         return redirect('login')
 
@@ -114,36 +114,15 @@ def login_view(request):
 
         if user is not None:
 
-            if not user.is_email_verified:
-                messages.error(request, "Please verify your email before login.")
-                return redirect('login')
 
-            # Generate OTP
-            otp = random.randint(100000, 999999)
+            login(request, user)
 
-            request.session['otp'] = str(otp)
-            request.session['user_id'] = user.id
-            request.session['email'] = user.email
-            request.session['otp_time'] = timezone.now().timestamp()
-
-            # Send OTP in background thread
-            threading.Thread(
-                target=send_email_thread,
-                args=(
-                    "VMS Login OTP",
-                    f"Your OTP is {otp}",
-                    [user.email]
-                )
-            ).start()
-
-            messages.success(request, "OTP sent to your email.")
-            return redirect('otp_verify')
+            return redirect('role_redirect')
 
         else:
             messages.error(request, "Invalid username or password.")
 
     return render(request, 'visitors/login.html')
-
 # VERIFY EMAIL
 # =====================
 def verify_email_confirm(request, uidb64, token):
@@ -396,54 +375,8 @@ def visitor_report(request):
     return render(request, 'visitors/visitor_report.html', {
         'visitors': visitors
     })
-# =====================
-# OTP VERIFY
-# =====================
-def otp_verify(request):
 
-    if request.method == "POST":
 
-        entered_otp = request.POST.get("otp")
-        session_otp = request.session.get("otp")
-        user_id = request.session.get("user_id")
-
-        if entered_otp == session_otp:
-
-            user = User.objects.get(id=user_id)
-            login(request, user)
-
-            return redirect("role_redirect")
-
-        else:
-            messages.error(request, "Invalid OTP")
-
-    return render(request, "visitors/otp.html")
-# =====================
-# RESEND OTP
-# =====================
-def resend_otp(request):
-
-    user_id = request.session.get('user_id')
-    if not user_id:
-        return redirect('login')
-
-    from visitors.models import CustomUser
-    user = CustomUser.objects.get(id=user_id)
-
-    new_otp = random.randint(100000, 999999)
-
-    request.session['otp'] = str(new_otp)
-    request.session['otp_time'] = timezone.now().timestamp()
-
-    send_mail(
-        "VMS Resend OTP",
-        f"Your new OTP is {new_otp}",
-        settings.DEFAULT_FROM_EMAIL,
-        [user.email],
-        fail_silently=False,
-    )
-
-    return redirect('otp_verify')
 #---------------
 #-------------------
 
@@ -551,26 +484,4 @@ def checkin_page(request):
     return render(request, 'visitors/checkin_page.html', {'visitors': visitors})
 
 
-def test_mail(request):
-    send_mail(
-        "Test Email",
-        "Django email working",
-        settings.DEFAULT_FROM_EMAIL,
-        ["pratidnyaagalave0105@gmail.com"],
-        fail_silently=False,
-    )
-    return HttpResponse("Email sent")
 
-from django.http import HttpResponse
-from django.core.mail import send_mail
-from django.conf import settings
-
-def test_email(request):
-    send_mail(
-        "Test Email",
-        "This is a test email from Visitor Management System",
-        settings.DEFAULT_FROM_EMAIL,
-        ["techconnectpratidnya@gmail.com"],
-        fail_silently=False
-    )
-    return HttpResponse("Email sent")
