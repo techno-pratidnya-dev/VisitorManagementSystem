@@ -117,7 +117,7 @@ def login_view(request):
 
             login(request, user)
 
-            return redirect('role_redirect')
+            return redirect('home')
 
         else:
             messages.error(request, "Invalid username or password.")
