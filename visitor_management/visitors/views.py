@@ -566,13 +566,11 @@ from django.core.mail import send_mail
 from django.conf import settings
 
 def test_email(request):
-
     send_mail(
         "Test Email",
-        "OTP test email",
+        "This is a test email from Visitor Management System",
         settings.DEFAULT_FROM_EMAIL,
         ["techconnectpratidnya@gmail.com"],
         fail_silently=False
     )
-
     return HttpResponse("Email sent")
