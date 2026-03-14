@@ -96,12 +96,11 @@ def register_view(request):
 
     return render(request, 'visitors/registration.html')
 
-# =====================
-# LOGIN
-# =====================
+
 # =====================
 # LOGIN WITH OTP
-# ====================
+# ===================
+
 def login_view(request):
 
     if request.user.is_authenticated:
@@ -120,25 +119,24 @@ def login_view(request):
                 messages.error(request, "Please verify your email before login.")
                 return redirect('login')
 
-            # 🔐 Generate OTP
+            # Generate OTP
             otp = random.randint(100000, 999999)
-            print("OTP:", otp)
 
-            request.session['otp'] = otp
+            request.session['otp'] = str(otp)
             request.session['user_id'] = user.id
             request.session['email'] = user.email
             request.session['otp_time'] = timezone.now().timestamp()
 
-            # 📧 Send OTP Email
-            threading.Thread(
-    target=send_email_thread,
-    args=(
-        "VMS Login OTP",
-        f"Your OTP is {otp}",
-        [user.email]
-    )
-).start()
+            # Send Email
+            send_mail(
+                "VMS Login OTP",
+                f"Your OTP is {otp}",
+                settings.DEFAULT_FROM_EMAIL,
+                [user.email],
+                fail_silently=False,
+            )
 
+            messages.success(request, "OTP sent to your email.")
             return redirect('otp_verify')
 
         else:
@@ -241,11 +239,7 @@ def add_visitor(request):
 # =====================
 # VISITOR LIST
 # =====================
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
-from django.db.models import Q
-from django.core.paginator import Paginator
-from .models import Visitor
+
 
 @login_required
 def visitor_list(request):
@@ -405,76 +399,51 @@ def visitor_report(request):
 # =====================
 # OTP VERIFY
 # =====================
+
+
 def otp_verify(request):
 
-    # 🔐 Check email in session
-    user_email = request.session.get('email')
-    if not user_email:
-        return redirect('login')
-
-    # 🔐 Check OTP expiry
-    otp_time = request.session.get('otp_time')
-    if not otp_time:
-        return redirect('login')
-
-    if timezone.now().timestamp() - otp_time > 180:
-        messages.error(request, "OTP expired. Please login again.")
-        return redirect('login')
-
-    if "@" in user_email:
-        masked_email = user_email[0] + "***@" + user_email.split("@")[1]
-    else:
-        masked_email = user_email[0] + "***"
-
     if request.method == "POST":
-        entered_otp = request.POST.get('otp')
-        session_otp = request.session.get('otp')
-        user_id = request.session.get('user_id')
 
-        if str(entered_otp) == str(session_otp):
+        entered_otp = request.POST.get("otp")
+        session_otp = request.session.get("otp")
+        user_id = request.session.get("user_id")
 
-            user = get_object_or_404(User, id=user_id)
+        if entered_otp == session_otp:
 
-            # 🔥 LOGIN USER
+            user = CustomUser.objects.get(id=user_id)
             login(request, user)
 
-            # 🔥 CLEAR OTP SESSION DATA
-            request.session.pop('otp', None)
-            request.session.pop('user_id', None)
-            request.session.pop('email', None)
-            request.session.pop('otp_time', None)
-
-            return redirect('role_redirect')
-
+            return redirect("role_redirect")
 
         else:
-            messages.error(request, "Invalid OTP.")
+            messages.error(request, "Invalid OTP")
 
-    return render(request, 'visitors/otp.html', {
-        'masked_email': masked_email
-    })
+    return render(request, "visitors/otp.html")
 # =====================
 # RESEND OTP
 # =====================
-@login_required
 def resend_otp(request):
+
     user_id = request.session.get('user_id')
     if not user_id:
         return redirect('login')
 
-    user = User.objects.get(id=user_id)
+    from visitors.models import CustomUser
+    user = CustomUser.objects.get(id=user_id)
 
     new_otp = random.randint(100000, 999999)
-    request.session['otp'] = new_otp
+
+    request.session['otp'] = str(new_otp)
     request.session['otp_time'] = timezone.now().timestamp()
 
     send_mail(
-    "VMS Resend OTP",
-    f"Your new OTP is {new_otp}",
-    settings.DEFAULT_FROM_EMAIL,
-    [user.email],
-    fail_silently=False,
-)
+        "VMS Resend OTP",
+        f"Your new OTP is {new_otp}",
+        settings.DEFAULT_FROM_EMAIL,
+        [user.email],
+        fail_silently=False,
+    )
 
     return redirect('otp_verify')
 #---------------
