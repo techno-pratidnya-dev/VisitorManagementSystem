@@ -100,7 +100,6 @@ def register_view(request):
 # =====================
 # LOGIN WITH OTP
 # ===================
-
 def login_view(request):
 
     if request.user.is_authenticated:
@@ -127,14 +126,15 @@ def login_view(request):
             request.session['email'] = user.email
             request.session['otp_time'] = timezone.now().timestamp()
 
-            # Send Email
-            send_mail(
-                "VMS Login OTP",
-                f"Your OTP is {otp}",
-                settings.DEFAULT_FROM_EMAIL,
-                [user.email],
-                fail_silently=False,
-            )
+            # Send OTP in background thread
+            threading.Thread(
+                target=send_email_thread,
+                args=(
+                    "VMS Login OTP",
+                    f"Your OTP is {otp}",
+                    [user.email]
+                )
+            ).start()
 
             messages.success(request, "OTP sent to your email.")
             return redirect('otp_verify')
@@ -399,8 +399,6 @@ def visitor_report(request):
 # =====================
 # OTP VERIFY
 # =====================
-
-
 def otp_verify(request):
 
     if request.method == "POST":
@@ -411,7 +409,7 @@ def otp_verify(request):
 
         if entered_otp == session_otp:
 
-            user = CustomUser.objects.get(id=user_id)
+            user = User.objects.get(id=user_id)
             login(request, user)
 
             return redirect("role_redirect")
