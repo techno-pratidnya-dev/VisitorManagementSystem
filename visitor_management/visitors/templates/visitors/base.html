@@ -203,8 +203,9 @@
 
 </footer>
 
-<!-- Service Worker -->
+<!-- Service Worker (Temporarily disabled to fix login issues) -->
 <script>
+/*
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("{% static 'visitors/js/sw.js' %}")
     .then(function () {
@@ -214,6 +215,7 @@ if ("serviceWorker" in navigator) {
       console.log("Service Worker failed:", error);
     });
 }
+*/
 </script>
 
 <!-- Bootstrap -->
