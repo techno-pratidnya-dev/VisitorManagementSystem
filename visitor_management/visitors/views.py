@@ -243,8 +243,13 @@ def visitor_list(request):
     status = request.GET.get("status")
     search = request.GET.get("search")
     export = request.GET.get("export")
+    date_filter = request.GET.get("filter")
 
-    if from_date and to_date:
+    if date_filter == "today":
+        visitors = visitors.filter(entry_time__date=timezone.now().date())
+    elif date_filter == "past":
+        visitors = visitors.filter(entry_time__date__lt=timezone.now().date())
+    elif from_date and to_date:
         visitors = visitors.filter(entry_time__date__range=[from_date, to_date])
 
     if status:

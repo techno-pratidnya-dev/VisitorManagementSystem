@@ -68,86 +68,101 @@
 </div>
 
 <!-- ================= NAVBAR ================= -->
-<nav class="navbar navbar-expand-lg navbar-dark main-navbar shadow-sm py-2">
-    <div class="container-fluid px-5 align-items-center">
+<nav class="navbar navbar-dark main-navbar shadow-sm py-2">
+    <div class="container-fluid px-4 d-flex align-items-center">
 
-        <div class="navbar-info text-white small d-none d-lg-flex align-items-center">
-            <i class="bi bi-telephone me-2"></i>
-            <span>Admission: <strong>9970013254</strong></span>
-            <span class="mx-3">|</span>
-            <i class="bi bi-heart-fill me-2 text-warning"></i>
-            <span>Donation: <strong>9404855530</strong></span>
-        </div>
-
-        <button class="navbar-toggler ms-auto"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-            <ul class="navbar-nav align-items-lg-center gap-lg-3">
-
-                {% if user.is_authenticated %}
-
-                   <a class="nav-link"
-   href="https://samiti.org/en/"
-   target="_blank">
-    Vidhyathi Sahayak Samiti
-</a>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'visitor_list' %}">Visitor List</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'profile' %}">Profile</a>
-                    </li>
-
-                    <li class="nav-item">
-    <a class="nav-link" href="{% url 'about' %}">About Us</a>
-</li>
-
-<li class="nav-item">
-    <a class="nav-link" href="#">Past Visited Visitor</a>
-</li>
-
-                    <li class="nav-item">
-                        <span class="navbar-text text-white small">
-                            Hi, {{ user.first_name|default:user.username }}
-                        </span>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="btn btn-outline-light px-3 ms-lg-2"
-                           href="{% url 'logout' %}">
-                           Logout
+        <!-- LEFT: Hamburger Dropdown (☰) -->
+        <div class="d-flex align-items-center">
+            {% if user.is_authenticated %}
+            <div class="dropdown">
+                <a class="nav-link dropdown-toggle text-white p-0" href="#" role="button"
+                   data-bs-toggle="dropdown" aria-expanded="false"
+                   title="Menu">
+                    <i class="bi bi-list" style="font-size: 1.8rem;"></i>
+                </a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a class="dropdown-item" href="https://samiti.org/en/" target="_blank">
+                            <i class="bi bi-house-door me-2"></i>Vidhyarthi Sahayak Samiti
                         </a>
                     </li>
-
-                {% else %}
-
-                    <li class="nav-item">
-                        <a class="btn btn-outline-light px-3"
-                           href="{% url 'login' %}">
-                           Login
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <a class="dropdown-item" href="{% url 'dashboard' %}">
+                            <i class="bi bi-speedometer2 me-2"></i>Dashboard
                         </a>
                     </li>
-                    <li class="nav-item">
-    <button id="themeToggle" class="theme-btn">
-        <i class="bi bi-moon-fill"></i>
-    </button>
-</li>
-
-                {% endif %}
-
-            </ul>
+                    <li>
+                        <a class="dropdown-item" href="{% url 'add_visitor' %}">
+                            <i class="bi bi-person-plus me-2"></i>Add Visitor
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="{% url 'visitor_list' %}">
+                            <i class="bi bi-people me-2"></i>Visitor List
+                        </a>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <a class="dropdown-item" href="{% url 'profile' %}">
+                            <i class="bi bi-person-circle me-2"></i>Profile
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="{% url 'about' %}">
+                            <i class="bi bi-info-circle me-2"></i>About Us
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="{% url 'visitor_list' %}?filter=past">
+                            <i class="bi bi-clock-history me-2"></i>Past Visited Visitor
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            {% endif %}
         </div>
+
+        <!-- CENTER: Contact Info -->
+        <div class="d-none d-lg-flex align-items-center gap-3 text-white small position-absolute start-50 translate-middle-x">
+            <span>
+                <i class="bi bi-telephone me-1"></i>
+                Admission: <strong>9970013254</strong>
+            </span>
+            <span class="mx-1">|</span>
+            <span>
+                <i class="bi bi-heart-fill me-1 text-warning"></i>
+                Donation: <strong>9404855530</strong>
+            </span>
+        </div>
+
+        <!-- RIGHT: Action Items -->
+        <div class="d-flex align-items-center gap-3 ms-auto">
+            {% if user.is_authenticated %}
+
+                <a class="nav-link text-white" href="{% url 'add_visitor' %}">
+                    <i class="bi bi-person-plus me-1"></i>Add Visitor
+                </a>
+
+                <span class="navbar-text text-white small">
+                    Hi, {{ user.first_name|default:user.username }}
+                </span>
+
+                <a class="btn btn-outline-light btn-sm px-3"
+                   href="{% url 'logout' %}">
+                   Logout
+                </a>
+
+            {% else %}
+
+                <a class="btn btn-outline-light btn-sm px-3"
+                   href="{% url 'login' %}">
+                   Login
+                </a>
+
+            {% endif %}
+        </div>
+
     </div>
 </nav>
 
