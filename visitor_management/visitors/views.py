@@ -195,6 +195,13 @@ def add_visitor(request):
             messages.error(request, "Signature is required (Digital or Upload).")
             return redirect("add_visitor")
 
+        # Determine who created this entry
+        if request.user.is_authenticated:
+            created_by = request.user
+        else:
+            # For public QR entries, assign to the first available Admin
+            created_by = User.objects.filter(role="ADMIN").first()
+
         Visitor.objects.create(
             name=request.POST.get('name'),
             mobile=request.POST.get('mobile'),
@@ -208,7 +215,7 @@ def add_visitor(request):
             remark=request.POST.get('remark'),
             photo=photo_file,
             signature=signature_file,
-            created_by=request.user if request.user.is_authenticated else None
+            created_by=created_by
         )
 
         messages.success(request, "Visitor entry submitted successfully 🎉")
