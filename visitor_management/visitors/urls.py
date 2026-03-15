@@ -49,4 +49,10 @@ urlpatterns = [
     # PROFILE
     # =====================
     path('profile/', views.profile, name='profile'),
+
+    # =====================
+    # API ENDPOINTS
+    # =====================
+    path('api/visitor-by-mobile/', views.get_visitor_by_mobile, name='visitor_by_mobile'),
+    path('api/check-duplicate-visitor/', views.check_duplicate_visitor, name='check_duplicate_visitor'),
 ]

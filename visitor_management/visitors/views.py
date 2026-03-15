@@ -13,6 +13,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
 from django.core.paginator import Paginator
 from django.core.mail import send_mail
 from django.conf import settings
@@ -491,10 +492,64 @@ def delete_visitor(request, id):
         return redirect('visitor_list')
 
     return render(request, 'visitors/delete_confirm.html', {'visitor': visitor})
+
 @login_required
 def checkin_page(request):
     visitors = Visitor.objects.filter(status='IN').order_by('-entry_time')
     return render(request, 'visitors/checkin_page.html', {'visitors': visitors})
+
+
+def get_visitor_by_mobile(request):
+    """
+    API endpoint to fetch the latest visitor data by mobile number.
+    Returns JSON data for auto-filling the entry form.
+    """
+    mobile = request.GET.get('mobile')
+    if not mobile:
+        return JsonResponse({'found': False, 'error': 'Mobile number is required'}, status=400)
+
+    # Fetch the most recent visitor with this mobile number
+    visitor = Visitor.objects.filter(mobile=mobile).order_by('-created_at').first()
+
+    if visitor:
+        data = {
+            'found': True,
+            'name': visitor.name,
+            'email': visitor.email,
+            'gender': visitor.gender,
+            'address': visitor.address,
+            'aadhaar': visitor.aadhaar,
+            'purpose': visitor.purpose,
+            'visit_to': visitor.visit_to,
+        }
+        return JsonResponse(data)
+    
+    return JsonResponse({'found': False})
+
+
+def check_duplicate_visitor(request):
+    """
+    API endpoint to check if a visitor with the given mobile number
+    has already been registered today.
+    """
+    mobile = request.GET.get('mobile')
+    if not mobile:
+        return JsonResponse({'duplicate': False})
+
+    today = timezone.now().date()
+    # Check if any visitor with this mobile has an entry today
+    duplicate_exists = Visitor.objects.filter(
+        mobile=mobile,
+        entry_time__date=today
+    ).exists()
+
+    if duplicate_exists:
+        return JsonResponse({
+            'duplicate': True,
+            'message': '⚠ This visitor has already registered today.'
+        })
+    
+    return JsonResponse({'duplicate': False})
 
 
 

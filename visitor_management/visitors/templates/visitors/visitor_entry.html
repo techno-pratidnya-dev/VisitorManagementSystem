@@ -35,6 +35,7 @@
 <label>Mobile *</label>
 <input type="text" name="mobile" maxlength="10"
        pattern="[0-9]{10}" class="form-control" required>
+<div id="duplicate-warning" class="mt-1 d-none small"></div>
 </div>
 
 <div class="col-md-6">
@@ -189,5 +190,6 @@
 </section>
 
 <script src="{% static 'visitors/js/visitor_entry.js' %}"></script>
+<script src="{% static 'visitors/js/autofill.js' %}"></script>
 
 {% endblock %}
