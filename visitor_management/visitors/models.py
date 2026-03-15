@@ -37,7 +37,9 @@ class Visitor(models.Model):
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,   # ✅ IMPORTANT CHANGE
         on_delete=models.CASCADE,
-        related_name='visitors'
+        related_name='visitors',
+        null=True,                  # ✅ Allow unauthenticated entries
+        blank=True
     )
 
     name = models.CharField(max_length=100)

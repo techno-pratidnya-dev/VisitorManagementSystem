@@ -1,4 +1,5 @@
 {% extends "visitors/base.html" %}
+{% load static %}
 {% block content %}
 
 <div class="container-fluid py-4">
@@ -71,6 +72,24 @@
             </div>
         </div>
 
+    </div>
+
+    <!-- ================= QR CODE SECTION ================= -->
+    <div class="row mt-5">
+        <div class="col-md-4 mx-auto">
+            <div class="card shadow text-center p-4">
+                <h5 class="fw-bold mb-3">
+                    <i class="bi bi-qr-code-scan me-2"></i>Scan QR to Register Visitor
+                </h5>
+                <img src="{% static 'visitors/images/visitor_entry_qr.png' %}"
+                     alt="Visitor Entry QR Code"
+                     class="img-fluid mx-auto d-block"
+                     style="max-width: 220px;">
+                <p class="text-muted mt-3 mb-0">
+                    <small>Scan this QR code with your phone camera to open the Visitor Entry form directly.</small>
+                </p>
+            </div>
+        </div>
     </div>
 
 </div>

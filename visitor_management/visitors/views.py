@@ -12,6 +12,7 @@ from django.db.models import Q
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
+from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator
 from django.core.mail import send_mail
 from django.conf import settings
@@ -156,16 +157,17 @@ def logout_view(request):
 # =====================
 # ADD VISITOR
 # =====================
-
-@login_required
+@csrf_exempt
 def add_visitor(request):
-
-    # ❗ Security role cannot add visitors
-    if request.user.role == "SECURITY":
+    """
+    Publicly accessible visitor entry form.
+    Allows both authenticated staff and unauthenticated visitors to register.
+    """
+    # ❗ If logged in, check role. SECURITY role is restricted.
+    if request.user.is_authenticated and request.user.role == "SECURITY":
         return HttpResponseForbidden("Security cannot add visitors.")
 
     if request.method == "POST":
-
         photo_file = request.FILES.get("photo")
         if not photo_file:
             messages.error(request, "Visitor photo is required.")
@@ -179,7 +181,6 @@ def add_visitor(request):
             try:
                 format, imgstr = signature_data.split(";base64,")
                 ext = format.split("/")[-1]
-
                 signature_file = ContentFile(
                     base64.b64decode(imgstr),
                     name=f"signature_{timezone.now().timestamp()}.{ext}"
@@ -187,7 +188,6 @@ def add_visitor(request):
             except Exception:
                 messages.error(request, "Invalid digital signature format.")
                 return redirect("add_visitor")
-
         elif uploaded_signature:
             signature_file = uploaded_signature
 
@@ -208,13 +208,15 @@ def add_visitor(request):
             remark=request.POST.get('remark'),
             photo=photo_file,
             signature=signature_file,
-            created_by=request.user
+            created_by=request.user if request.user.is_authenticated else None
         )
 
-        messages.success(request, "Visitor added successfully 🎉")
-        return redirect("visitor_list")
+        messages.success(request, "Visitor entry submitted successfully 🎉")
+        return redirect("add_visitor")
 
+    # Handle GET request: Show the form
     return render(request, "visitors/visitor_entry.html")
+
 # =====================
 # VISITOR LIST
 # =====================
@@ -283,7 +285,6 @@ def visitor_list(request):
 # =====================
 # EXPORT CSV
 # =====================
-@login_required
 def export_visitors_csv(visitors):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="visitors.csv"'

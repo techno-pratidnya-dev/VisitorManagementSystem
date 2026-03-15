@@ -27,6 +27,7 @@ urlpatterns = [
     # =====================
     # VISITOR SECTION
     # =====================
+    path('visitor-entry/', views.add_visitor, name='visitor_entry'),
     path('visitors/', views.visitor_list, name='visitor_list'),
     path('visitors/add/', views.add_visitor, name='add_visitor'),
     path('visitors/checkout/<int:visitor_id>/', views.checkout_visitor, name='checkout_visitor'),
