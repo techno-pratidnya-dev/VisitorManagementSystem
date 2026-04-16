@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Past Visitors | Visitor Management System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="title-container">
+            <h1>Past Visitors</h1>
+        </div>
+        <div class="search-filter-box">
+            <div class="search-bar">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="searchInput" placeholder="Search visitors...">
+            </div>
+            <div class="filter-dropdown">
+                <select id="statusFilter">
+                    <option value="All">AllStatus</option>
+                    <option value="Visited">Visited</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Cancelled">Cancelled</option>
+                </select>
+            </div>
+        </div>
+        <div class="header-actions">
+            <button class="btn btn-primary" id="addVisitorBtn"><i class="fa-solid fa-plus"></i> Add</button>
+        </div>
+    </header>
+
+    <main>
+        <div class="feed-container" id="visitorFeed">
+            <!-- Skeleton items will be here initially -->
+            <div class="visitor-card skeleton" style="height: 400px;"></div>
+            <div class="visitor-card skeleton" style="height: 400px;"></div>
+        </div>
+    </main>
+
+    <!-- Generic Form Modal -->
+    <div id="visitorModal" class="modal-overlay" style="display:none;">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h2 id="modalTitle">Add New Visitor</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form id="visitorForm" class="modal-body">
+                <input type="hidden" id="visitorId">
+                <div class="form-group">
+                    <label>Visitor Name</label>
+                    <input type="text" id="vName" required placeholder="Full Name">
+                </div>
+                <div class="form-group">
+                    <label>Purpose of Visit</label>
+                    <textarea id="vPurpose" required placeholder="Meeting details..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Meeting With</label>
+                    <input type="text" id="vMeetingWith" required placeholder="Employee Name / Dept">
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <select id="vStatus">
+                        <option value="Visited">Visited</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Cancelled">Cancelled</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline close-modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Visitor</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
