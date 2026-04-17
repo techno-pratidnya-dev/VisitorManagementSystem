@@ -39,7 +39,7 @@ def create_post():
 
 @posts_bp.route('/posts/<int:post_id>', methods=['PUT', 'PATCH'])
 def update_post(post_id):
-    post = Post.query.get_or_404(post_id)
+    post = db.get_or_404(Post, post_id)
     data = request.json
     
     if 'name' in data: post.name = data['name']
@@ -54,7 +54,7 @@ def update_post(post_id):
 
 @posts_bp.route('/posts/<int:post_id>', methods=['DELETE'])
 def delete_post(post_id):
-    post = Post.query.get_or_404(post_id)
+    post = db.get_or_404(Post, post_id)
     db.session.delete(post)
     db.session.commit()
     return jsonify({'message': 'Post deleted successfully'}), 200

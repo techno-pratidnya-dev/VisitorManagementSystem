@@ -6,7 +6,9 @@ import os, uuid
 UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), 'static', 'uploads')
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp', 'mp4', 'mov', 'webm', 'ogg'}
 
-app = Flask(__name__, template_folder='visitors/templates')
+app = Flask(__name__,
+            template_folder='visitors/templates',
+            static_folder='static')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///vms_new.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
