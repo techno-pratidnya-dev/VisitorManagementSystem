@@ -1,32 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guest Activity Feed | Vidhyarthi Sahayak Samiti</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/feed.css') }}">
-</head>
-<body>
+{% extends "visitors/base_flask.html" %}
 
-<!-- ===== NAVBAR ===== -->
-<nav class="top-navbar">
-    <div class="navbar-inner">
-        <div class="brand">
-            <div class="brand-logo"><i class="bi bi-building"></i></div>
-            <div class="brand-text">
-                <span class="brand-name">Vidhyarthi Sahayak Samiti</span>
-                <span class="brand-sub">Guest Activity Feed</span>
-            </div>
-        </div>
-        <div class="nav-actions">
-            <a href="#" class="nav-link-item" title="Dashboard"><i class="bi bi-speedometer2"></i><span>Dashboard</span></a>
-            <a href="#" class="nav-link-item active" title="Guest Feed"><i class="bi bi-people-fill"></i><span>Guest Feed</span></a>
-        </div>
-    </div>
-</nav>
+{% block title %}Guest Activity Feed | Vidhyarthi Sahayak Samiti{% endblock %}
+
+{% block extra_css %}
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/feed.css') }}">
+{% endblock %}
+
+{% block content %}
 
 <!-- ===== HERO BANNER ===== -->
 <section class="hero-banner">
@@ -47,7 +28,7 @@
             <div class="org-info">
                 <div class="org-logo"><i class="bi bi-building-fill"></i></div>
                 <h4>Vidhyarthi Sahayak Samiti</h4>
-                <p>Vidhyarthi Sahayak Samiti, Shivajinagar, FC Road, Pune - 5</p>
+                <p>Shivajinagar, FC Road, Pune - 5</p>
                 <div class="org-stats">
                     <div class="stat"><span id="totalPosts">0</span><small>Guests</small></div>
                     <div class="stat"><span id="vipCount">0</span><small>VIPs</small></div>
@@ -68,8 +49,6 @@
 
     <!-- MAIN FEED -->
     <main class="feed-main">
-
-        <!-- Feed Controls -->
         <div class="feed-controls">
             <div class="search-wrap">
                 <i class="bi bi-search"></i>
@@ -80,7 +59,6 @@
             </button>
         </div>
 
-        <!-- Feed Container -->
         <div id="feedContainer">
             <div class="skeleton-card"></div>
             <div class="skeleton-card"></div>
@@ -105,14 +83,6 @@
     </aside>
 
 </div>
-
-<!-- ===== FOOTER ===== -->
-<footer class="site-footer">
-    <div class="footer-inner">
-        <span>Vidhyarthi Sahayak Samiti &copy; 2026</span>
-        <span>Guest Activity Feed | Visitor Management System</span>
-    </div>
-</footer>
 
 <!-- ===== CREATE / EDIT POST MODAL ===== -->
 <div class="modal-bg" id="modalBg">
@@ -153,7 +123,7 @@
                 <label>Upload Image / Video from Device</label>
                 <div class="upload-drop-zone" id="uploadDropZone">
                     <i class="bi bi-cloud-arrow-up-fill"></i>
-                    <p>Click to browse or drag & drop</p>
+                    <p>Click to browse or drag &amp; drop</p>
                     <small>PNG, JPG, GIF, MP4, MOV (Max 50MB)</small>
                     <input type="file" id="mediaFile" accept="image/*,video/*" style="display:none;">
                 </div>
@@ -193,8 +163,8 @@
     </div>
 </div>
 
+{% endblock %}
+
+{% block extra_js %}
 <script src="{{ url_for('static', filename='js/feed.js') }}"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<button class="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
-</body>
-</html>
+{% endblock %}

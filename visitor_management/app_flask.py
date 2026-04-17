@@ -1,10 +1,13 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, send_from_directory
 from visitors.models_flask import db, Post
 from visitors.routes_flask import posts_bp
 import os, uuid
 
 UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), 'static', 'uploads')
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp', 'mp4', 'mov', 'webm', 'ogg'}
+
+# Django static root (served by Flask for shared assets)
+DJANGO_STATIC = os.path.join(os.path.dirname(__file__), 'visitors', 'static')
 
 app = Flask(__name__,
             template_folder='visitors/templates',
@@ -16,6 +19,11 @@ app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024  # 50 MB max
 
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 db.init_app(app)
+
+# Serve Django static files (logo, base.css, base.js, etc.)
+@app.route('/django-static/<path:filename>')
+def static_django(filename):
+    return send_from_directory(DJANGO_STATIC, filename)
 
 # Register Blueprints
 app.register_blueprint(posts_bp, url_prefix='/api')
