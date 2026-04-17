@@ -53,6 +53,8 @@ urlpatterns = [
     # =====================
     # API ENDPOINTS
     # =====================
+    path('past-visitors/', views.past_visiter, name='past_visiter'),
+
     path('api/visitor-by-mobile/', views.get_visitor_by_mobile, name='visitor_by_mobile'),
     path('api/check-duplicate-visitor/', views.check_duplicate_visitor, name='check_duplicate_visitor'),
 ]

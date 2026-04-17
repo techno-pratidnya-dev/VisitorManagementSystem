@@ -553,3 +553,9 @@ def check_duplicate_visitor(request):
 
 
 
+def past_visiter(request):
+    """
+    Redirects to the Flask implementation of the Past Visitors feed.
+    This fixes the NoReverseMatch error in the Django templates.
+    """
+    return redirect('http://127.0.0.1:5000/past-visitors')
