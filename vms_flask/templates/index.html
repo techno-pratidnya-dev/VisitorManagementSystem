@@ -8,36 +8,90 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <header>
-        <div class="title-container">
-            <h1>Past Visitors</h1>
-        </div>
-        <div class="search-filter-box">
-            <div class="search-bar">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="searchInput" placeholder="Search visitors...">
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="branding">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Vidhyarthi Sahayak Samiti</span>
+                </div>
             </div>
-            <div class="filter-dropdown">
-                <select id="statusFilter">
-                    <option value="All">AllStatus</option>
-                    <option value="Visited">Visited</option>
-                    <option value="Pending">Pending</option>
-                    <option value="Cancelled">Cancelled</option>
-                </select>
-            </div>
-        </div>
-        <div class="header-actions">
-            <button class="btn btn-primary" id="addVisitorBtn"><i class="fa-solid fa-plus"></i> Add</button>
-        </div>
-    </header>
 
-    <main>
-        <div class="feed-container" id="visitorFeed">
-            <!-- Skeleton items will be here initially -->
-            <div class="visitor-card skeleton" style="height: 400px;"></div>
-            <div class="visitor-card skeleton" style="height: 400px;"></div>
-        </div>
-    </main>
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <a href="#" class="nav-item">
+                        <i class="fa-solid fa-gauge-high"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <i class="fa-solid fa-user-plus"></i>
+                        <span>Add Visitor</span>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <i class="fa-solid fa-users-viewfinder"></i>
+                        <span>Visitor List</span>
+                    </a>
+                </div>
+
+                <div class="nav-divider"></div>
+
+                <div class="nav-section">
+                    <a href="#" class="nav-item">
+                        <i class="fa-solid fa-circle-user"></i>
+                        <span>Profile</span>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <i class="fa-solid fa-circle-info"></i>
+                        <span>About Us</span>
+                    </a>
+                    <a href="#" class="nav-item active">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                        <span>Past Visited Visitor</span>
+                    </a>
+                </div>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="date-picker-box">
+                    <label>Select date</label>
+                    <input type="date" id="dateSelect">
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <header>
+                <div class="title-container">
+                    <h1>Past Visitors</h1>
+                </div>
+                <div class="search-filter-box">
+                    <div class="search-bar">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="searchInput" placeholder="Search visitors...">
+                    </div>
+                    <div class="filter-dropdown">
+                        <select id="statusFilter">
+                            <option value="All">All Status</option>
+                            <option value="Visited">Visited</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Cancelled">Cancelled</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-primary" id="addVisitorBtn"><i class="fa-solid fa-plus"></i> Add</button>
+                    <button class="btn-icon mobile-menu-toggle" id="menuToggle"><i class="fa-solid fa-bars"></i></button>
+                </div>
+            </header>
+
+            <div class="feed-container" id="visitorFeed">
+                <!-- Skeleton items will be here initially -->
+                <div class="visitor-card skeleton" style="height: 400px;"></div>
+            </div>
+        </main>
+    </div>
 
     <!-- Generic Form Modal -->
     <div id="visitorModal" class="modal-overlay" style="display:none;">

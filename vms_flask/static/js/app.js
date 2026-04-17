@@ -8,7 +8,31 @@ document.addEventListener('DOMContentLoaded', () => {
     const addVisitorBtn = document.getElementById('addVisitorBtn');
     const closeModalBtns = document.querySelectorAll('.close-modal');
 
+    const menuToggle = document.getElementById('menuToggle');
+    const dateSelect = document.getElementById('dateSelect');
+    const sidebar = document.querySelector('.sidebar');
+
     let visitorsData = [];
+
+    // Sidebar Mobile Toggle
+    if (menuToggle) {
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+            if (sidebar.classList.contains('open')) {
+                const overlay = document.createElement('div');
+                overlay.className = 'sidebar-overlay';
+                overlay.style.cssText = 'position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.3); z-index:900;';
+                overlay.addEventListener('click', () => {
+                    sidebar.classList.remove('open');
+                    overlay.remove();
+                });
+                document.body.appendChild(overlay);
+            } else {
+                const overlay = document.querySelector('.sidebar-overlay');
+                if (overlay) overlay.remove();
+            }
+        });
+    }
 
     // Modal Control
     const openModal = (mode, visitor = null) => {
@@ -65,15 +89,29 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Date Selection logic
+    if (dateSelect) {
+        dateSelect.addEventListener('change', () => fetchVisitors());
+    }
+
+    // Navigation highlighting logic
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.addEventListener('click', (e) => {
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            item.classList.add('active');
+        });
+    });
+
     // Fetch and render visitors
     const fetchVisitors = async () => {
         const search = searchInput.value;
         const status = statusFilter.value;
+        const date = dateSelect ? dateSelect.value : '';
         
         renderSkeletons();
 
         try {
-            const response = await fetch(`/api/visitors?search=${search}&status=${status === 'AllStatus' ? '' : status}`);
+            const response = await fetch(`/api/visitors?search=${search}&status=${status === 'All Status' ? '' : status}&date=${date}`);
             visitorsData = await response.json();
             renderVisitors(visitorsData);
         } catch (error) {
