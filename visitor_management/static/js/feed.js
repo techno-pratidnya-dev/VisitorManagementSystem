@@ -18,6 +18,12 @@ document.addEventListener('DOMContentLoaded', () => {
     let activeFilter = 'All';
     let activeMediaType = 'image';
 
+    const uploadDropZone = document.getElementById('uploadDropZone');
+    const mediaFileInput = document.getElementById('mediaFile');
+    const uploadProgress = document.getElementById('uploadProgress');
+    const progressBar = document.getElementById('progressBar');
+    const progressText = document.getElementById('progressText');
+
     // ===== MEDIA TYPE TOGGLE =====
     mtypeBtns.forEach(btn => {
         btn.addEventListener('click', () => {
@@ -30,6 +36,56 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     mediaUrlInput.addEventListener('input', updateMediaPreview);
+
+    // ===== UPLOAD DROP ZONE =====
+    uploadDropZone.addEventListener('click', () => mediaFileInput.click());
+
+    uploadDropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadDropZone.classList.add('drag-over');
+    });
+    uploadDropZone.addEventListener('dragleave', () => uploadDropZone.classList.remove('drag-over'));
+    uploadDropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadDropZone.classList.remove('drag-over');
+        const file = e.dataTransfer.files[0];
+        if (file) handleFileUpload(file);
+    });
+
+    mediaFileInput.addEventListener('change', () => {
+        const file = mediaFileInput.files[0];
+        if (file) handleFileUpload(file);
+    });
+
+    async function handleFileUpload(file) {
+        uploadDropZone.classList.add('has-file');
+        uploadDropZone.querySelector('p').textContent = file.name;
+        uploadDropZone.querySelector('i').className = 'bi bi-file-earmark-check-fill';
+        uploadProgress.style.display = 'flex';
+        progressBar.style.width = '20%';
+        progressText.textContent = 'Uploading...';
+
+        const formData = new FormData();
+        formData.append('file', file);
+
+        try {
+            const res = await fetch('/api/upload', { method: 'POST', body: formData });
+            const data = await res.json();
+            if (data.url) {
+                progressBar.style.width = '100%';
+                progressText.textContent = '✓ Upload successful!';
+                mediaUrlInput.value = data.url;
+                activeMediaType = data.media_type;
+                mtypeBtns.forEach(b => b.classList.toggle('active', b.dataset.mtype === activeMediaType));
+                updateMediaPreview();
+                setTimeout(() => { uploadProgress.style.display = 'none'; progressBar.style.width = '0%'; }, 2000);
+            } else {
+                progressText.textContent = '✗ Upload failed: ' + (data.error || 'Unknown error');
+            }
+        } catch (err) {
+            progressText.textContent = '✗ Upload failed. Server error.';
+        }
+    }
 
     function updateMediaPreview() {
         const url = mediaUrlInput.value.trim();
@@ -204,6 +260,13 @@ document.addEventListener('DOMContentLoaded', () => {
         activeMediaType = 'image';
         mtypeBtns.forEach(b => b.classList.toggle('active', b.dataset.mtype === 'image'));
         mediaUrlRow.style.display = 'block';
+        // Reset upload zone
+        uploadDropZone.classList.remove('has-file');
+        uploadDropZone.querySelector('p').textContent = 'Click to browse or drag & drop';
+        uploadDropZone.querySelector('i').className = 'bi bi-cloud-arrow-up-fill';
+        uploadProgress.style.display = 'none';
+        progressBar.style.width = '0%';
+        mediaFileInput.value = '';
 
         if (mode === 'edit' && post) {
             document.getElementById('modalHeading').textContent = 'Edit Guest Post';
