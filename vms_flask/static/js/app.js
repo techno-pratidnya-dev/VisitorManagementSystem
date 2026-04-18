@@ -63,12 +63,17 @@ document.addEventListener('DOMContentLoaded', () => {
     visitorForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const id = document.getElementById('visitorId').value;
-        const payload = {
-            name: document.getElementById('vName').value,
-            purpose: document.getElementById('vPurpose').value,
-            meeting_with: document.getElementById('vMeetingWith').value,
-            status: document.getElementById('vStatus').value
-        };
+        const formData = new FormData();
+        
+        formData.append('name', document.getElementById('vName').value);
+        formData.append('purpose', document.getElementById('vPurpose').value);
+        formData.append('meeting_with', document.getElementById('vMeetingWith').value);
+        formData.append('status', document.getElementById('vStatus').value);
+        
+        const fileInput = document.getElementById('vImage');
+        if (fileInput.files.length > 0) {
+            formData.append('vImage', fileInput.files[0]);
+        }
 
         const method = id ? 'PUT' : 'POST';
         const url = id ? `/api/visitors/${id}` : '/api/visitors';
@@ -76,8 +81,8 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const response = await fetch(url, {
                 method: method,
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
+                // Do not set Content-Type header manually when using FormData
+                body: formData
             });
 
             if (response.ok) {
@@ -139,6 +144,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 openModal('edit', visitor);
             });
         });
+
+        // Add delete listeners
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                if(confirm('Are you sure you want to delete this visitor?')) {
+                    const id = e.target.closest('.visitor-card').dataset.id;
+                    try {
+                        const response = await fetch(`/api/visitors/${id}`, { method: 'DELETE' });
+                        if(response.ok) {
+                            fetchVisitors();
+                        }
+                    } catch(error) {
+                        console.error('Error deleting visitor:', error);
+                    }
+                }
+            });
+        });
     };
 
     const renderSkeletons = () => {
@@ -160,7 +182,10 @@ document.addEventListener('DOMContentLoaded', () => {
                             <p class="visit-meta">${v.time}</p>
                         </div>
                     </div>
-                    <button class="options-btn edit-btn"><i class="fa-solid fa-pen-to-square"></i></button>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="options-btn edit-btn" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
+                        <button class="options-btn delete-btn" title="Delete" style="color: #ef4444;"><i class="fa-solid fa-trash-can"></i></button>
+                    </div>
                 </div>
                 <div class="card-content">
                     <p class="purpose-text">${v.purpose}</p>

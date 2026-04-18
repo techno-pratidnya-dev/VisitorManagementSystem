@@ -8,7 +8,34 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="app-container">
+    <!-- ================= LOGO HEADER SECTION ================= -->
+    <div class="header-section py-3 bg-light" style="border-bottom: 1px solid #e5e7eb;">
+        <div class="container-fluid px-5 d-flex justify-content-between align-items-center flex-wrap" style="display:flex; justify-content:space-between; align-items:center; padding: 10px 50px; background: white;">
+            <!-- Logo -->
+            <div class="d-flex align-items-center">
+                <h2 style="color: #1a4f8b; margin: 0; font-family: 'Poppins', sans-serif;"><i class="fa-solid fa-house" style="margin-right: 10px;"></i>Vidhyarthi Sahayak Samiti</h2>
+            </div>
+            <!-- Contact Boxes -->
+            <div class="contact-boxes d-flex align-items-center gap-4" style="display:flex; gap: 20px; font-family: 'Poppins', sans-serif;">
+                <div class="contact-item" style="display:flex; align-items:center; gap:10px;">
+                    <i class="fa-solid fa-phone" style="font-size:20px; color:#1a4f8b;"></i>
+                    <div style="font-size:12px;"><strong>PHONE</strong><br>020-25533631</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ================= NAVBAR ================= -->
+    <nav class="navbar navbar-dark shadow-sm py-2" style="background: linear-gradient(270deg, #0f172a, #1e3a8a, #114c86); padding: 12px 50px; color: white; display:flex; justify-content: space-between; font-family: 'Poppins', sans-serif;">
+        <div style="display:flex; gap:20px;">
+            <a href="http://127.0.0.1:8000/visitors/dashboard/" style="color:white; text-decoration:none; font-weight:500;">Dashboard</a>
+            <a href="http://127.0.0.1:8000/visitors/add/" style="color:white; text-decoration:none; font-weight:500;">Add Visitor</a>
+        </div>
+        <div style="font-size: 14px;">
+            Hi, Admin | <a href="http://127.0.0.1:8000/visitors/logout/" style="color:white; text-decoration:underline;">Logout</a>
+        </div>
+    </nav>
+
+    <div class="app-container" style="height: calc(100vh - 120px);">
         <!-- Sidebar Navigation -->
         <aside class="sidebar">
             <div class="sidebar-header">
@@ -20,15 +47,15 @@
 
             <nav class="sidebar-nav">
                 <div class="nav-section">
-                    <a href="#" class="nav-item">
+                    <a href="http://127.0.0.1:8000/visitors/dashboard/" class="nav-item">
                         <i class="fa-solid fa-gauge-high"></i>
                         <span>Dashboard</span>
                     </a>
-                    <a href="#" class="nav-item">
+                    <a href="http://127.0.0.1:8000/visitors/add/" class="nav-item">
                         <i class="fa-solid fa-user-plus"></i>
                         <span>Add Visitor</span>
                     </a>
-                    <a href="#" class="nav-item">
+                    <a href="http://127.0.0.1:8000/visitors/" class="nav-item">
                         <i class="fa-solid fa-users-viewfinder"></i>
                         <span>Visitor List</span>
                     </a>
@@ -37,15 +64,15 @@
                 <div class="nav-divider"></div>
 
                 <div class="nav-section">
-                    <a href="#" class="nav-item">
+                    <a href="http://127.0.0.1:8000/visitors/profile/" class="nav-item">
                         <i class="fa-solid fa-circle-user"></i>
                         <span>Profile</span>
                     </a>
-                    <a href="#" class="nav-item">
+                    <a href="http://127.0.0.1:8000/visitors/about/" class="nav-item">
                         <i class="fa-solid fa-circle-info"></i>
                         <span>About Us</span>
                     </a>
-                    <a href="#" class="nav-item active">
+                    <a href="/past-visitors" class="nav-item active">
                         <i class="fa-solid fa-clock-rotate-left"></i>
                         <span>Past Visited Visitor</span>
                     </a>
@@ -121,6 +148,12 @@
                         <option value="Pending">Pending</option>
                         <option value="Cancelled">Cancelled</option>
                     </select>
+                </div>
+                <div class="form-group" style="border: 2px dashed #cbd5e1; padding: 15px; text-align: center; border-radius: 8px;">
+                    <label style="display:block; margin-bottom: 8px; color: #64748b; font-weight: 500;">
+                        <i class="fa-solid fa-cloud-arrow-up"></i> Upload Visitor Photo (Optional)
+                    </label>
+                    <input type="file" id="vImage" name="vImage" accept="image/*" style="width: 100%;">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline close-modal">Cancel</button>
