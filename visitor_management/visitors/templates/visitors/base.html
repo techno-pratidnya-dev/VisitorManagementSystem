@@ -22,76 +22,42 @@
 </head>
 <body>
 
-<!-- ================= LOGO HEADER SECTION ================= -->
-<div class="header-section py-3 bg-light">
-    <div class="container-fluid px-5 d-flex justify-content-between align-items-center flex-wrap">
-        <!-- Logo -->
-        <div class="d-flex align-items-center">
-            <img src="{% static 'visitors/images/samiti-logo-web.png' %}" height="70">
+<!-- ================= SLEEK NAVBAR ================= -->
+<header class="sleek-navbar">
+    <div class="sleek-navbar-left">
+        <div class="sleek-logo-box">
+            <i class="bi bi-building"></i>
         </div>
-
-        <!-- Contact Boxes -->
-        <div class="contact-boxes d-flex align-items-center gap-4">
-
-            <div class="contact-item d-flex align-items-center">
-                <div class="icon-box">
-                    <i class="bi bi-geo-alt"></i>
-                </div>
-                <div class="contact-text">
-                    <strong>ADDRESS</strong><br>
-                    1182/1/4, Shivajinagar, FC Road, Pune - 5
-                </div>
-            </div>
-
-            <div class="contact-item d-flex align-items-center">
-                <div class="icon-box">
-                    <i class="bi bi-envelope"></i>
-                </div>
-                <div class="contact-text">
-                    <strong>E-MAIL</strong><br>
-                    info@samiti.org
-                </div>
-            </div>
-
-            <div class="contact-item d-flex align-items-center">
-                <div class="icon-box">
-                    <i class="bi bi-telephone"></i>
-                </div>
-                <div class="contact-text">
-                    <strong>PHONE</strong><br>
-                    020-25533631 / 9404855530
-                </div>
-            </div>
-
+        <div class="sleek-brand">
+            <h2>Vidhyarthi Sahayak Samiti</h2>
+            <p>{% block header_subtitle %}Guest Activity Feed{% endblock %}</p>
         </div>
     </div>
-</div>
-
-<!-- ================= NAVBAR ================= -->
-<nav class="navbar navbar-dark main-navbar shadow-sm py-2">
-    <div class="container-fluid px-4 d-flex align-items-center">
-
-        <!-- LEFT: Hamburger Dropdown (☰) -->
-        <div class="d-flex align-items-center">
-            {% if user.is_authenticated %}
+    
+    <div class="sleek-navbar-right">
+        {% if user.is_authenticated %}
+            <!-- Dashboard Button -->
+            <a href="{% url 'dashboard' %}" class="sleek-btn {% if request.path == '/visitors/dashboard/' %}active{% endif %}">
+                <i class="bi bi-speedometer2"></i> Dashboard
+            </a>
+            
+            <!-- Guest Feed Button -->
+            <a href="{% url 'past_visiter' %}?filter=past" class="sleek-btn {% if request.path == '/visitors/past-visited/' %}active{% endif %}">
+                <i class="bi bi-people-fill"></i> Guest Feed
+            </a>
+            
+            <!-- Menu/Logout Dropdown -->
             <div class="dropdown">
-                <a class="nav-link dropdown-toggle text-white p-0" href="#" role="button"
-                   data-bs-toggle="dropdown" aria-expanded="false"
-                   title="Menu">
-                    <i class="bi bi-list" style="font-size: 1.8rem;"></i>
-                </a>
-                <ul class="dropdown-menu">
+                <button class="sleek-btn-dropdown" data-bs-toggle="dropdown" aria-expanded="false" title="Menu">
+                    <i class="bi bi-list"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end shadow-sm">
                     <li>
                         <a class="dropdown-item" href="https://samiti.org/en/" target="_blank">
-                            <i class="bi bi-house-door me-2"></i>Vidhyarthi Sahayak Samiti
+                            <i class="bi bi-house-door me-2"></i>Organization Site
                         </a>
                     </li>
                     <li><hr class="dropdown-divider"></li>
-                    <li>
-                        <a class="dropdown-item" href="{% url 'dashboard' %}">
-                            <i class="bi bi-speedometer2 me-2"></i>Dashboard
-                        </a>
-                    </li>
                     <li>
                         <a class="dropdown-item" href="{% url 'add_visitor' %}">
                             <i class="bi bi-person-plus me-2"></i>Add Visitor
@@ -99,7 +65,7 @@
                     </li>
                     <li>
                         <a class="dropdown-item" href="{% url 'visitor_list' %}">
-                            <i class="bi bi-people me-2"></i>Visitor List
+                            <i class="bi bi-card-list me-2"></i>Visitor List
                         </a>
                     </li>
                     <li><hr class="dropdown-divider"></li>
@@ -109,62 +75,21 @@
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item" href="{% url 'about' %}">
-                            <i class="bi bi-info-circle me-2"></i>About Us
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" href="{% url 'past_visiter' %}?filter=past">
-                            <i class="bi bi-clock-history me-2"></i>Past Visited Visitor
+                        <a class="dropdown-item text-danger" href="{% url 'logout' %}">
+                            <i class="bi bi-box-arrow-right me-2"></i>Logout
                         </a>
                     </li>
                 </ul>
             </div>
-            {% endif %}
-        </div>
-
-        <!-- CENTER: Contact Info -->
-        <div class="d-none d-lg-flex align-items-center gap-3 text-white small position-absolute start-50 translate-middle-x">
-            <span>
-                <i class="bi bi-telephone me-1"></i>
-                Admission: <strong>9970013254</strong>
-            </span>
-            <span class="mx-1">|</span>
-            <span>
-                <i class="bi bi-heart-fill me-1 text-warning"></i>
-                Donation: <strong>9404855530</strong>
-            </span>
-        </div>
-
-        <!-- RIGHT: Action Items -->
-        <div class="d-flex align-items-center gap-3 ms-auto">
-            {% if user.is_authenticated %}
-
-                <a class="nav-link text-white" href="{% url 'add_visitor' %}">
-                    <i class="bi bi-person-plus me-1"></i>Add Visitor
-                </a>
-
-                <span class="navbar-text text-white small">
-                    Hi, {{ user.first_name|default:user.username }}
-                </span>
-
-                <a class="btn btn-outline-light btn-sm px-3"
-                   href="{% url 'logout' %}">
-                   Logout
-                </a>
-
-            {% else %}
-
-                <a class="btn btn-outline-light btn-sm px-3"
-                   href="{% url 'login' %}">
-                   Login
-                </a>
-
-            {% endif %}
-        </div>
-
+        {% else %}
+            <!-- Login Button for Unauthenticated Users -->
+            <a href="{% url 'login' %}" class="sleek-btn active">
+                <i class="bi bi-box-arrow-in-right"></i> Login
+            </a>
+        {% endif %}
     </div>
-</nav>
+</header>
+
 
 <!-- ================= MAIN CONTENT BLOCK ================= -->
 <main class="main-content">

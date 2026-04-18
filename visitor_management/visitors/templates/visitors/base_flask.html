@@ -24,127 +24,67 @@
 </head>
 <body>
 
-<!-- ================= LOGO HEADER SECTION ================= -->
-<div class="header-section py-3 bg-light">
-    <div class="container-fluid px-5 d-flex justify-content-between align-items-center flex-wrap">
-        <!-- Logo -->
-        <div class="d-flex align-items-center">
-            <img src="/django-static/visitors/images/samiti-logo-web.png" height="70">
+<!-- ================= SLEEK NAVBAR ================= -->
+<header class="sleek-navbar">
+    <div class="sleek-navbar-left">
+        <div class="sleek-logo-box">
+            <i class="bi bi-building"></i>
         </div>
-
-        <!-- Contact Boxes -->
-        <div class="contact-boxes d-flex align-items-center gap-4">
-
-            <div class="contact-item d-flex align-items-center">
-                <div class="icon-box">
-                    <i class="bi bi-geo-alt"></i>
-                </div>
-                <div class="contact-text">
-                    <strong>ADDRESS</strong><br>
-                    1182/1/4, Shivajinagar, FC Road, Pune - 5
-                </div>
-            </div>
-
-            <div class="contact-item d-flex align-items-center">
-                <div class="icon-box">
-                    <i class="bi bi-envelope"></i>
-                </div>
-                <div class="contact-text">
-                    <strong>E-MAIL</strong><br>
-                    info@samiti.org
-                </div>
-            </div>
-
-            <div class="contact-item d-flex align-items-center">
-                <div class="icon-box">
-                    <i class="bi bi-telephone"></i>
-                </div>
-                <div class="contact-text">
-                    <strong>PHONE</strong><br>
-                    020-25533631 / 9404855530
-                </div>
-            </div>
-
+        <div class="sleek-brand">
+            <h2>Vidhyarthi Sahayak Samiti</h2>
+            <p>{% block header_subtitle %}Guest Activity Feed{% endblock %}</p>
         </div>
     </div>
-</div>
-
-<!-- ================= NAVBAR ================= -->
-<nav class="navbar navbar-dark main-navbar shadow-sm py-2">
-    <div class="container-fluid px-4 d-flex align-items-center">
-
-        <!-- LEFT: Hamburger Dropdown (☰) -->
-        <div class="d-flex align-items-center">
-            <div class="dropdown">
-                <a class="nav-link dropdown-toggle text-white p-0" href="#" role="button"
-                   data-bs-toggle="dropdown" aria-expanded="false" title="Menu">
-                    <i class="bi bi-list" style="font-size: 1.8rem;"></i>
-                </a>
-                <ul class="dropdown-menu">
-                    <li>
-                        <a class="dropdown-item" href="https://samiti.org/en/" target="_blank">
-                            <i class="bi bi-house-door me-2"></i>Vidhyarthi Sahayak Samiti
-                        </a>
-                    </li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li>
-                        <a class="dropdown-item" href="/visitors/dashboard/">
-                            <i class="bi bi-speedometer2 me-2"></i>Dashboard
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" href="/visitors/add/">
-                            <i class="bi bi-person-plus me-2"></i>Add Visitor
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" href="/visitors/">
-                            <i class="bi bi-people me-2"></i>Visitor List
-                        </a>
-                    </li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li>
-                        <a class="dropdown-item" href="/visitors/profile/">
-                            <i class="bi bi-person-circle me-2"></i>Profile
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" href="/visitors/about/">
-                            <i class="bi bi-info-circle me-2"></i>About Us
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item active" href="/guest-feed">
-                            <i class="bi bi-clock-history me-2"></i>Guest Activity Feed
-                        </a>
-                    </li>
-                </ul>
-            </div>
+    
+    <div class="sleek-navbar-right">
+        <!-- Dashboard Button -->
+        <a href="/visitors/dashboard/" class="sleek-btn">
+            <i class="bi bi-speedometer2"></i> Dashboard
+        </a>
+        
+        <!-- Guest Feed Button -->
+        <a href="/guest-feed" class="sleek-btn active">
+            <i class="bi bi-people-fill"></i> Guest Feed
+        </a>
+        
+        <!-- Menu/Logout Dropdown -->
+        <div class="dropdown">
+            <button class="sleek-btn-dropdown" data-bs-toggle="dropdown" aria-expanded="false" title="Menu">
+                <i class="bi bi-list"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                <li>
+                    <a class="dropdown-item" href="https://samiti.org/en/" target="_blank">
+                        <i class="bi bi-house-door me-2"></i>Organization Site
+                    </a>
+                </li>
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                    <a class="dropdown-item" href="/visitors/add/">
+                        <i class="bi bi-person-plus me-2"></i>Add Visitor
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="/visitors/">
+                        <i class="bi bi-card-list me-2"></i>Visitor List
+                    </a>
+                </li>
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                    <a class="dropdown-item" href="/visitors/profile/">
+                        <i class="bi bi-person-circle me-2"></i>Profile
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item text-danger" href="/visitors/logout/">
+                        <i class="bi bi-box-arrow-right me-2"></i>Logout
+                    </a>
+                </li>
+            </ul>
         </div>
-
-        <!-- CENTER: Contact Info -->
-        <div class="d-none d-lg-flex align-items-center gap-3 text-white small position-absolute start-50 translate-middle-x">
-            <span>
-                <i class="bi bi-telephone me-1"></i>
-                Admission: <strong>9970013254</strong>
-            </span>
-            <span class="mx-1">|</span>
-            <span>
-                <i class="bi bi-heart-fill me-1 text-warning"></i>
-                Donation: <strong>9404855530</strong>
-            </span>
-        </div>
-
-        <!-- RIGHT: Action Items -->
-        <div class="d-flex align-items-center gap-3 ms-auto">
-            <a class="nav-link text-white" href="/visitors/add/">
-                <i class="bi bi-person-plus me-1"></i>Add Visitor
-            </a>
-            <a class="btn btn-outline-light btn-sm px-3" href="/visitors/logout/">Logout</a>
-        </div>
-
     </div>
-</nav>
+</header>
+
 
 <!-- ================= MAIN CONTENT BLOCK ================= -->
 <main>

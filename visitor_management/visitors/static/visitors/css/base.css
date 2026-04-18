@@ -64,98 +64,90 @@ a {
     transition: 0.3s ease;
 }
 
-/* ================= HEADER ================= */
+/* ================= SLEEK NAVBAR ================= */
 
-.header-section {
-    background: #ffffff;
-    border-bottom: 1px solid #e5e7eb;
-    box-shadow: 0 2px 15px rgba(0,0,0,0.05);
-}
-
-.contact-boxes {
+.sleek-navbar {
+    background-color: #25459b;
+    padding: 12px 24px;
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 35px;
-    font-size: 14px;
-}
-
-.contact-item {
-    display: flex;
-    align-items: center;
-    min-width: 220px;
-    background: #f8fafc;
-    padding: 10px 18px;
-    border-radius: 12px;
-    transition: 0.3s ease;
-}
-
-.contact-item:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-}
-
-.icon-box {
-    width: 45px;
-    height: 45px;
-    border: 2px solid #114c86;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 12px;
-    color: #114c86;
-    font-size: 18px;
-    transition: 0.3s ease;
-}
-
-.icon-box:hover {
-    background: #114c86;
-    color: #ffffff;
-}
-
-/* ================= NAVBAR ================= */
-
-.main-navbar {
-    background: linear-gradient(270deg, #0f172a, #1e3a8a, #114c86);
-    background-size: 600% 600%;
-    animation: gradientMove 8s ease infinite;
-    padding: 10px 0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     position: sticky;
     top: 0;
     z-index: 1000;
-    backdrop-filter: blur(8px);
 }
 
-@keyframes gradientMove {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+.sleek-navbar-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }
 
-.main-navbar.scrolled {
-    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+.sleek-logo-box {
+    width: 48px;
+    height: 48px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-size: 24px;
 }
 
-.main-navbar .nav-link {
-    color: rgba(255,255,255,0.95) !important;
-    padding: 8px 14px;
+.sleek-brand h2 {
+    margin: 0;
+    color: #ffffff;
+    font-size: 1.1rem;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.sleek-brand p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.8rem;
+    font-weight: 400;
+}
+
+.sleek-navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.sleek-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 0.9rem;
     font-weight: 500;
-    position: relative;
-}
-
-.main-navbar .nav-link::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 0%;
-    height: 2px;
-    background: #ff6a00;
     transition: 0.3s ease;
+    text-decoration: none;
 }
 
-.main-navbar .nav-link:hover::after {
-    width: 100%;
+.sleek-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
 }
+
+.sleek-btn.active {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.sleek-btn-dropdown {
+    background: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 5px;
+}
+
 
 /* ================= BUTTONS ================= */
 
