@@ -13,6 +13,7 @@ db.init_app(app)
 app.register_blueprint(visitors_bp, url_prefix='/api')
 
 @app.route('/')
+@app.route('/past-visitors')
 def index():
     return render_template('index.html')
 
