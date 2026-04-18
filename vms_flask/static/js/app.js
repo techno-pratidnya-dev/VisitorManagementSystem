@@ -1,58 +1,64 @@
 document.addEventListener('DOMContentLoaded', () => {
     const visitorFeed = document.getElementById('visitorFeed');
     const searchInput = document.getElementById('searchInput');
-    const statusFilter = document.getElementById('statusFilter');
+    const statusFilter = document.getElementById('statusFilter'); // actually we changed filters to buttons in HTML
     const visitorModal = document.getElementById('visitorModal');
     const visitorForm = document.getElementById('visitorForm');
     const modalTitle = document.getElementById('modalTitle');
     const addVisitorBtn = document.getElementById('addVisitorBtn');
     const closeModalBtns = document.querySelectorAll('.close-modal');
 
-    const menuToggle = document.getElementById('menuToggle');
-    const dateSelect = document.getElementById('dateSelect');
-    const sidebar = document.querySelector('.sidebar');
+    // Filter Buttons logic
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    let activeStatusFilter = 'All';
 
-    let visitorsData = [];
-
-    // Sidebar Mobile Toggle
-    if (menuToggle) {
-        menuToggle.addEventListener('click', () => {
-            sidebar.classList.toggle('open');
-            if (sidebar.classList.contains('open')) {
-                const overlay = document.createElement('div');
-                overlay.className = 'sidebar-overlay';
-                overlay.style.cssText = 'position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.3); z-index:900;';
-                overlay.addEventListener('click', () => {
-                    sidebar.classList.remove('open');
-                    overlay.remove();
-                });
-                document.body.appendChild(overlay);
-            } else {
-                const overlay = document.querySelector('.sidebar-overlay');
-                if (overlay) overlay.remove();
-            }
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            filterBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            activeStatusFilter = btn.dataset.type;
+            fetchVisitors();
         });
-    }
+    });
+
+    const mediaUploadBox = document.getElementById('mediaUploadBox');
+    const btnMediaImage = document.getElementById('btnMediaImage');
+    const btnMediaText = document.getElementById('btnMediaText');
+    let activeMediaTab = 'image';
+
+    btnMediaImage.addEventListener('click', () => {
+        btnMediaImage.classList.add('active');
+        btnMediaText.classList.remove('active');
+        mediaUploadBox.style.display = 'block';
+        activeMediaTab = 'image';
+    });
+
+    btnMediaText.addEventListener('click', () => {
+        btnMediaText.classList.add('active');
+        btnMediaImage.classList.remove('active');
+        mediaUploadBox.style.display = 'none';
+        activeMediaTab = 'text';
+    });
 
     // Modal Control
     const openModal = (mode, visitor = null) => {
-        visitorModal.style.display = 'flex';
+        visitorModal.classList.add('show');
         if (mode === 'edit' && visitor) {
-            modalTitle.innerText = 'Edit Visitor';
+            modalTitle.innerText = 'Edit Guest Post';
             document.getElementById('visitorId').value = visitor.id;
             document.getElementById('vName').value = visitor.name;
             document.getElementById('vPurpose').value = visitor.purpose;
             document.getElementById('vMeetingWith').value = visitor.meeting_with;
             document.getElementById('vStatus').value = visitor.status;
         } else {
-            modalTitle.innerText = 'Add New Visitor';
+            modalTitle.innerText = 'Create Guest Post';
             visitorForm.reset();
             document.getElementById('visitorId').value = '';
         }
     };
 
     const closeModal = () => {
-        visitorModal.style.display = 'none';
+        visitorModal.classList.remove('show');
         visitorForm.reset();
     };
 
@@ -71,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
         formData.append('status', document.getElementById('vStatus').value);
         
         const fileInput = document.getElementById('vImage');
-        if (fileInput.files.length > 0) {
+        if (activeMediaTab === 'image' && fileInput.files.length > 0) {
             formData.append('vImage', fileInput.files[0]);
         }
 
@@ -81,7 +87,6 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const response = await fetch(url, {
                 method: method,
-                // Do not set Content-Type header manually when using FormData
                 body: formData
             });
 
@@ -90,34 +95,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 fetchVisitors(); // Refresh feed
             }
         } catch (error) {
-            console.error('Error saving visitor:', error);
+            console.error('Error saving post:', error);
         }
-    });
-
-    // Date Selection logic
-    if (dateSelect) {
-        dateSelect.addEventListener('change', () => fetchVisitors());
-    }
-
-    // Navigation highlighting logic
-    document.querySelectorAll('.nav-item').forEach(item => {
-        item.addEventListener('click', (e) => {
-            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-            item.classList.add('active');
-        });
     });
 
     // Fetch and render visitors
     const fetchVisitors = async () => {
         const search = searchInput.value;
-        const status = statusFilter.value;
-        const date = dateSelect ? dateSelect.value : '';
         
         renderSkeletons();
 
         try {
-            const response = await fetch(`/api/visitors?search=${search}&status=${status === 'All Status' ? '' : status}&date=${date}`);
-            visitorsData = await response.json();
+            const response = await fetch(`/api/visitors?search=${search}&status=${activeStatusFilter === 'All' ? '' : activeStatusFilter}`);
+            const visitorsData = await response.json();
+            window.visitorsData = visitorsData; // store globally for edits
             renderVisitors(visitorsData);
         } catch (error) {
             console.error('Error fetching visitors:', error);
@@ -127,9 +118,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const renderVisitors = (visitors) => {
         if (visitors.length === 0) {
             visitorFeed.innerHTML = `
-                <div class="empty-state" style="text-align:center; padding: 3rem; color: var(--text-muted);">
-                    <i class="fa-solid fa-user-slash" style="font-size: 3rem; margin-bottom: 1rem;"></i>
-                    <h3>No visitors found</h3>
+                <div class="empty-state" style="text-align:center; padding: 3rem; color: var(--muted);">
+                    <i class="fa-solid fa-users" style="font-size: 3rem; margin-bottom: 1rem; opacity:0.5;"></i>
+                    <h4>No posts found</h4>
+                    <p style="font-size:0.9rem;">Try adjusting your filters or search.</p>
                 </div>
             `;
             return;
@@ -140,15 +132,15 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.edit-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const id = e.target.closest('.visitor-card').dataset.id;
-                const visitor = visitorsData.find(v => v.id == id);
-                openModal('edit', visitor);
+                const visitor = window.visitorsData.find(v => v.id == id);
+                if (visitor) openModal('edit', visitor);
             });
         });
 
         // Add delete listeners
         document.querySelectorAll('.delete-btn').forEach(btn => {
             btn.addEventListener('click', async (e) => {
-                if(confirm('Are you sure you want to delete this visitor?')) {
+                if(confirm('Are you sure you want to delete this post?')) {
                     const id = e.target.closest('.visitor-card').dataset.id;
                     try {
                         const response = await fetch(`/api/visitors/${id}`, { method: 'DELETE' });
@@ -156,7 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             fetchVisitors();
                         }
                     } catch(error) {
-                        console.error('Error deleting visitor:', error);
+                        console.error('Error deleting post:', error);
                     }
                 }
             });
@@ -165,21 +157,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const renderSkeletons = () => {
         visitorFeed.innerHTML = `
-            <div class="visitor-card skeleton" style="height: 450px; border:none; margin-bottom: 20px;"></div>
-            <div class="visitor-card skeleton" style="height: 450px; border:none; margin-bottom: 20px;"></div>
+            <div class="visitor-card skeleton" style="height: 380px;"></div>
+            <div class="visitor-card skeleton" style="height: 380px;"></div>
         `;
     };
 
     const createVisitorCard = (v) => {
-        const statusClass = `status-${v.status.toLowerCase()}`;
+        const isCompleted = v.status === 'Visited' ? 'status-visited' : 'status-pending'; // simplified status classes
+        let mediaHtml = '';
+        
+        // We guess it's a text post if image is blank or placeholder
+        if (v.visitor_image && v.visitor_image !== '' && !v.visitor_image.includes('v1.png') && !v.visitor_image.includes('placeholder')) {
+            mediaHtml = `<div class="card-media"><img src="${v.visitor_image}" alt="Visit entry" loading="lazy"></div>`;
+        }
+
         return `
-            <div class="visitor-card" data-id="${v.id}">
-                <div class="card-header">
-                    <div class="user-info">
-                        <img src="${v.profile_image}" alt="${v.name}" class="avatar">
-                        <div class="user-text">
-                            <h3>${v.name}</h3>
-                            <p class="visit-meta">${v.time}</p>
+            <article class="visitor-card" data-id="${v.id}">
+                <div class="card-top">
+                    <div class="guest-info">
+                        <div class="guest-avatar">${v.name.charAt(0).toUpperCase()}</div>
+                        <div class="guest-meta">
+                            <div class="guest-name">${v.name}</div>
+                            <div class="guest-time"><i class="fa-regular fa-clock"></i> ${v.time}</div>
+                            <span class="type-badge type-visitor"><i class="fa-solid fa-circle"></i> ${v.meeting_with || 'General'}</span>
                         </div>
                     </div>
                     <div style="display: flex; gap: 8px;">
@@ -187,44 +187,30 @@ document.addEventListener('DOMContentLoaded', () => {
                         <button class="options-btn delete-btn" title="Delete" style="color: #ef4444;"><i class="fa-solid fa-trash-can"></i></button>
                     </div>
                 </div>
-                <div class="card-content">
-                    <p class="purpose-text">${v.purpose}</p>
-                    <p class="meeting-with"><i class="fa-solid fa-user-tie"></i> Meeting with: ${v.meeting_with}</p>
-                </div>
-                <div class="card-media">
-                    <img src="${v.visitor_image}" alt="Visit entry" loading="lazy">
-                </div>
-                <div class="card-footer">
-                    <span class="status-badge ${statusClass}">${v.status}</span>
-                    <div class="action-row">
-                        <div class="interactions">
-                            <button class="interaction-btn"><i class="fa-regular fa-thumbs-up"></i> 12</button>
-                            <button class="interaction-btn"><i class="fa-regular fa-comment"></i> 3</button>
-                        </div>
-                        <div class="main-actions">
-                            <button class="btn btn-outline edit-btn">Edit</button>
-                            <button class="btn btn-primary">Revisit</button>
-                        </div>
+
+                <div class="card-description">${v.purpose}</div>
+
+                ${mediaHtml}
+
+                <div class="card-bottom">
+                    <span class="status-pill ${isCompleted}"><i class="fa-solid fa-circle-check"></i> ${v.status}</span>
+                    <div class="card-actions">
+                        <button class="action-btn primary"><i class="fa-solid fa-eye"></i> Details</button>
                     </div>
                 </div>
-            </div>
+            </article>
         `;
     };
 
     // Debounce for search
     let debounceTimer;
-    searchInput.addEventListener('input', () => {
-        clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(fetchVisitors, 300);
-    });
-
-    statusFilter.addEventListener('change', fetchVisitors);
+    if(searchInput) {
+        searchInput.addEventListener('input', () => {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(fetchVisitors, 300);
+        });
+    }
 
     // Initial fetch
     fetchVisitors();
 });
-
-// Modal Logic
-function viewDetails(id) {
-    alert(`Showing details for Visitor ID: ${id}. \n(In a full production app, this would open a rich modal or separate page)`);
-}
