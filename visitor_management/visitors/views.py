@@ -148,9 +148,10 @@ def verify_email_confirm(request, uidb64, token):
 # LOGOUT
 # =====================
 def logout_view(request):
-    name = request.user.first_name or request.user.username
-    logout(request)
-    messages.success(request, f"Logged out successfully, {name}")
+    if request.user.is_authenticated:
+        name = request.user.first_name or request.user.username
+        logout(request)
+        messages.success(request, f"Logged out successfully, {name}")
     return redirect('index')
 
 
